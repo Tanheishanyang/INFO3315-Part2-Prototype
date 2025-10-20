@@ -25,6 +25,19 @@
   --transition: 0.2s ease;
 }
 
+body[data-theme='dark'] {
+  --color-bg: #101812;
+  --color-surface: #17241d;
+  --color-surface-alt: #1f2f25;
+  --color-primary: #6ed09d;
+  --color-primary-light: #89e6b5;
+  --color-accent: #6ed09d;
+  --color-text: #f3f7f3;
+  --color-muted: #b8c7bd;
+  --color-border: #2a3a31;
+  --shadow-sm: 0 10px 26px rgba(0, 0, 0, 0.45);
+}
+
 * {
   box-sizing: border-box;
 }
@@ -558,6 +571,30 @@ main {
   color: var(--color-muted);
 }
 
+.settings-grid {
+  display: grid;
+  gap: 20px;
+}
+
+.settings-card {
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
+  display: grid;
+  gap: 12px;
+}
+
+.settings-card h2 {
+  margin: 0;
+}
+
+.settings-card p {
+  margin: 0;
+  color: var(--color-muted);
+}
+
+
 .app-footer {
   padding: 24px 20px;
   text-align: center;
@@ -577,6 +614,47 @@ main {
 
 #app:focus {
   outline: none;
+}
+
+body.mobile-preview {
+  background: var(--color-bg);
+}
+
+body.mobile-preview .top-bar,
+body.mobile-preview .app-footer {
+  max-width: 430px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+body.mobile-preview .top-bar {
+  margin-top: 24px;
+  border-radius: 28px 28px 0 0;
+  position: static;
+  box-shadow: 0 0 0 10px rgba(31, 42, 36, 0.18);
+}
+
+body.mobile-preview main#app {
+  max-width: 430px;
+  margin: 0 auto 60px;
+  border-radius: 28px;
+  box-shadow: 0 0 0 10px rgba(31, 42, 36, 0.18);
+  padding: 24px 18px 80px;
+  background: var(--color-bg);
+}
+
+body.mobile-preview .view {
+  margin: 24px auto;
+}
+
+body.mobile-preview .app-footer {
+  border-radius: 0 0 28px 28px;
+  box-shadow: 0 0 0 10px rgba(31, 42, 36, 0.18);
+  padding: 20px 18px;
+}
+
+body.mobile-preview .main-nav {
+  justify-content: flex-start;
 }
 
 @media (min-width: 720px) {
@@ -615,46 +693,47 @@ main {
     <header class="top-bar">
       <div class="brand">
         <span aria-hidden="true">&#129379;</span>
-        <div>
-          <p class="brand-name">Smart Food Delivery</p>
-          <p class="brand-tagline">Sustainable meals for remote communities</p>
-        </div>
+      <div>
+        <p class="brand-name">Smart Food Delivery</p>
+        <p class="brand-tagline" data-i18n="brandTagline">Sustainable meals for remote communities</p>
+      </div>
       </div>
       <nav class="main-nav" aria-label="Primary">
-        <button class="nav-btn" data-target="home-view">Search</button>
-        <button class="nav-btn" data-target="compare-view">Compare</button>
-        <button class="nav-btn" data-target="checkout-view">Checkout</button>
-        <button class="nav-btn" data-target="tracking-view">Tracking</button>
-        <button class="nav-btn" data-target="report-view">Report</button>
+        <button class="nav-btn" data-target="home-view" data-i18n="navSearch">Search</button>
+        <button class="nav-btn" data-target="compare-view" data-i18n="navCompare">Compare</button>
+        <button class="nav-btn" data-target="checkout-view" data-i18n="navCheckout">Checkout</button>
+        <button class="nav-btn" data-target="tracking-view" data-i18n="navTracking">Tracking</button>
+        <button class="nav-btn" data-target="report-view" data-i18n="navReport">Report</button>
+        <button class="nav-btn" data-target="settings-view" data-i18n="navSettings">Settings</button>
       </nav>
     </header>
 
     <main id="app" tabindex="-1">
       <section id="home-view" class="view active" aria-labelledby="home-title">
         <header class="view-header">
-          <h1 id="home-title">Find nearby food suppliers</h1>
-          <p class="view-instruction">Task 1: Use the filters to locate affordable, low-carbon options that deliver to your area.</p>
+          <h1 id="home-title" data-i18n="homeTitle">Find nearby food suppliers</h1>
+          <p class="view-instruction" data-i18n="homeInstruction">Task 1: Use the filters to locate affordable, low-carbon options that deliver to your area.</p>
         </header>
 
         <form id="filter-form" class="filter-panel" aria-label="Search filters">
           <div class="field">
-            <label for="search-input">Search by name or location</label>
-            <input id="search-input" type="search" placeholder="Try 'Outback' or 'Remote'" />
+            <label for="search-input" data-i18n="searchLabel">Search by name or location</label>
+            <input id="search-input" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Try 'Outback' or 'Remote'" />
           </div>
 
           <div class="field-group">
             <div class="field">
-              <label for="price-filter">Price band</label>
+              <label for="price-filter" data-i18n="priceLabel">Price band</label>
               <select id="price-filter">
-                <option value="all">Any</option>
-                <option value="$">$ - Lowest cost</option>
-                <option value="$$">$$ - Balanced</option>
-                <option value="$$$">$$$ - Premium</option>
+                <option value="all" data-i18n="priceAny">Any</option>
+                <option value="$" data-i18n="priceLow">$ - Lowest cost</option>
+                <option value="$$" data-i18n="priceMid">$$ - Balanced</option>
+                <option value="$$$" data-i18n="priceHigh">$$$ - Premium</option>
               </select>
             </div>
 
             <div class="field">
-              <label for="distance-filter">Max distance (km)</label>
+              <label for="distance-filter" data-i18n="distanceLabel">Max distance (km)</label>
               <input id="distance-filter" type="range" min="5" max="60" value="40" step="5" />
               <output id="distance-output" for="distance-filter">40 km</output>
             </div>
@@ -663,35 +742,35 @@ main {
           <div class="field toggles">
             <label class="toggle">
               <input id="surplus-toggle" type="checkbox" />
-              <span>Show surplus food offers only</span>
+              <span data-i18n="surplusLabel">Show surplus food offers only</span>
             </label>
             <label class="toggle">
               <input id="delivery-toggle" type="checkbox" checked />
-              <span>Delivery available</span>
+              <span data-i18n="deliveryLabel">Delivery available</span>
             </label>
           </div>
         </form>
 
         <section aria-live="polite" aria-atomic="true">
-          <h2 class="section-title">Suppliers near you</h2>
-          <p class="section-subtitle">Tap a card to compare or add a community hamper to your cart.</p>
+          <h2 class="section-title" data-i18n="suppliersTitle">Suppliers near you</h2>
+          <p class="section-subtitle" data-i18n="suppliersSubtitle">Tap a card to compare or add a community hamper to your cart.</p>
           <div id="supplier-grid" class="supplier-grid"></div>
         </section>
       </section>
 
       <section id="compare-view" class="view" aria-labelledby="compare-title" hidden>
         <header class="view-header">
-          <h1 id="compare-title">Compare suppliers</h1>
-          <p class="view-instruction">Task 2: Choose two suppliers to see how they differ in freshness, price, and emissions.</p>
+          <h1 id="compare-title" data-i18n="compareTitle">Compare suppliers</h1>
+          <p class="view-instruction" data-i18n="compareInstruction">Task 2: Choose two suppliers to see how they differ in freshness, price, and emissions.</p>
         </header>
 
         <div class="compare-panel">
           <div class="field">
-            <label for="compare-a">Supplier A</label>
+            <label for="compare-a" data-i18n="compareSupplierA">Supplier A</label>
             <select id="compare-a"></select>
           </div>
           <div class="field">
-            <label for="compare-b">Supplier B</label>
+            <label for="compare-b" data-i18n="compareSupplierB">Supplier B</label>
             <select id="compare-b"></select>
           </div>
         </div>
@@ -700,34 +779,34 @@ main {
           <table class="comparison-table" aria-describedby="compare-title">
             <thead>
               <tr>
-                <th scope="col">Metric</th>
+                <th scope="col" data-i18n="compareMetricHeading">Metric</th>
                 <th scope="col" id="compare-name-a">Supplier A</th>
                 <th scope="col" id="compare-name-b">Supplier B</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row">Price</th>
+                <th scope="row" data-i18n="compareMetricPrice">Price</th>
                 <td data-metric="price-a"></td>
                 <td data-metric="price-b"></td>
               </tr>
               <tr>
-                <th scope="row">Freshness score</th>
+                <th scope="row" data-i18n="compareMetricFreshness">Freshness score</th>
                 <td data-metric="freshness-a"></td>
                 <td data-metric="freshness-b"></td>
               </tr>
               <tr>
-                <th scope="row">Delivery CO2 impact</th>
+                <th scope="row" data-i18n="compareMetricCO2">Delivery CO2 impact</th>
                 <td data-metric="co2-a"></td>
                 <td data-metric="co2-b"></td>
               </tr>
               <tr>
-                <th scope="row">Distance</th>
+                <th scope="row" data-i18n="compareMetricDistance">Distance</th>
                 <td data-metric="distance-a"></td>
                 <td data-metric="distance-b"></td>
               </tr>
               <tr>
-                <th scope="row">Surplus food</th>
+                <th scope="row" data-i18n="compareMetricSurplus">Surplus food</th>
                 <td data-metric="surplus-a"></td>
                 <td data-metric="surplus-b"></td>
               </tr>
@@ -738,48 +817,48 @@ main {
 
       <section id="checkout-view" class="view" aria-labelledby="checkout-title" hidden>
         <header class="view-header">
-          <h1 id="checkout-title">Review and place your order</h1>
-          <p class="view-instruction">Task 3: Confirm the items in your hamper, then place the order to start tracking.</p>
+          <h1 id="checkout-title" data-i18n="checkoutTitle">Review and place your order</h1>
+          <p class="view-instruction" data-i18n="checkoutInstruction">Task 3: Confirm the items in your hamper, then place the order to start tracking.</p>
         </header>
 
         <div class="checkout-layout">
           <section class="cart" aria-label="Cart contents">
-            <h2>Cart summary</h2>
+            <h2 data-i18n="cartSummary">Cart summary</h2>
             <ul id="cart-list" class="cart-list"></ul>
-            <p id="cart-empty" class="empty-state">Your hamper is empty. Add items from the search view.</p>
+            <p id="cart-empty" class="empty-state" data-i18n="cartEmpty">Your hamper is empty. Add items from the search view.</p>
             <div class="cart-total">
-              <span>Total</span>
+              <span data-i18n="totalLabel">Total</span>
               <strong id="cart-total">$0.00</strong>
             </div>
           </section>
 
           <section class="checkout-details" aria-label="Delivery preferences">
-            <h2>Delivery preferences</h2>
+            <h2 data-i18n="deliveryPreferences">Delivery preferences</h2>
             <div class="field">
-              <label for="delivery-window">Delivery window</label>
+              <label for="delivery-window" data-i18n="deliveryWindow">Delivery window</label>
               <select id="delivery-window">
-                <option value="11:00 - 13:00">11:00 - 13:00</option>
-                <option value="13:00 - 15:00">13:00 - 15:00</option>
-                <option value="17:00 - 19:00">17:00 - 19:00</option>
+                <option value="11:00 - 13:00" data-i18n="deliveryWindowMorning">11:00 - 13:00</option>
+                <option value="13:00 - 15:00" data-i18n="deliveryWindowAfternoon">13:00 - 15:00</option>
+                <option value="17:00 - 19:00" data-i18n="deliveryWindowEvening">17:00 - 19:00</option>
               </select>
             </div>
 
             <div class="field">
-              <label for="contact-note">Driver note</label>
-              <textarea id="contact-note" rows="3" placeholder="Add directions or access notes"></textarea>
+              <label for="contact-note" data-i18n="driverNote">Driver note</label>
+              <textarea id="contact-note" rows="3" data-i18n-placeholder="driverNotePlaceholder" placeholder="Add directions or access notes"></textarea>
             </div>
 
-            <button id="place-order" class="primary-btn" type="button" disabled>Place order</button>
+            <button id="place-order" class="primary-btn" type="button" disabled data-i18n="placeOrder">Place order</button>
             <p id="order-status" class="order-status" role="status" aria-live="polite"></p>
-            <button id="go-to-tracking" class="secondary-btn" type="button" hidden>Go to tracking</button>
+            <button id="go-to-tracking" class="secondary-btn" type="button" hidden data-i18n="goToTracking">Go to tracking</button>
           </section>
         </div>
       </section>
 
       <section id="tracking-view" class="view" aria-labelledby="tracking-title" hidden>
         <header class="view-header">
-          <h1 id="tracking-title">Track your delivery</h1>
-          <p class="view-instruction">Task 3 (continued): Follow the delivery stages to monitor when food arrives.</p>
+          <h1 id="tracking-title" data-i18n="trackingTitle">Track your delivery</h1>
+          <p class="view-instruction" data-i18n="trackingInstruction">Task 3 (continued): Follow the delivery stages to monitor when food arrives.</p>
         </header>
 
         <section class="tracking-card" aria-live="polite">
@@ -788,38 +867,68 @@ main {
           <div class="progress-bar" aria-hidden="true">
             <div id="progress-indicator" class="progress-indicator"></div>
           </div>
-          <button id="reset-tracking" class="secondary-btn" type="button">Restart tracking demo</button>
+          <button id="reset-tracking" class="secondary-btn" type="button" data-i18n="trackingRestart">Restart tracking demo</button>
         </section>
       </section>
 
       <section id="report-view" class="view" aria-labelledby="report-title" hidden>
         <header class="view-header">
-          <h1 id="report-title">Savings & sustainability report</h1>
-          <p class="view-instruction">Optional Task: Review your impact after ordering surplus community hampers.</p>
+          <h1 id="report-title" data-i18n="reportTitle">Savings & sustainability report</h1>
+          <p class="view-instruction" data-i18n="reportInstruction">Optional Task: Review your impact after ordering surplus community hampers.</p>
         </header>
 
         <div class="report-grid">
           <article class="report-card">
-            <h2>Money saved</h2>
+            <h2 data-i18n="reportSavingsTitle">Money saved</h2>
             <p class="report-value" id="report-savings">$0.00</p>
-            <p class="report-detail">Compared to standard metropolitan deliveries.</p>
+            <p class="report-detail" data-i18n="reportSavingsDetail">Compared to standard metropolitan deliveries.</p>
           </article>
           <article class="report-card">
-            <h2>CO2 avoided</h2>
+            <h2 data-i18n="reportCo2Title">CO2 avoided</h2>
             <p class="report-value" id="report-co2">0.0 kg</p>
-            <p class="report-detail">Estimated from lower delivery distances and surplus rescue.</p>
+            <p class="report-detail" data-i18n="reportCo2Detail">Estimated from lower delivery distances and surplus rescue.</p>
           </article>
           <article class="report-card">
-            <h2>Meals rescued</h2>
+            <h2 data-i18n="reportMealsTitle">Meals rescued</h2>
             <p class="report-value" id="report-meals">0</p>
-            <p class="report-detail">Surplus portions diverted from waste this month.</p>
+            <p class="report-detail" data-i18n="reportMealsDetail">Surplus portions diverted from waste this month.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="settings-view" class="view" aria-labelledby="settings-title" hidden>
+        <header class="view-header">
+          <h1 id="settings-title" data-i18n="settingsTitle">Settings</h1>
+          <p class="view-instruction" data-i18n="settingsInstruction">Adjust theme, language, and preview mode for your study participants.</p>
+        </header>
+
+        <div class="settings-grid">
+          <article class="settings-card">
+            <h2 data-i18n="appearanceHeading">Appearance</h2>
+            <p data-i18n="appearanceDescription">Switch between day and night modes to test readability.</p>
+            <button id="theme-toggle" class="primary-btn" type="button">Switch to night mode</button>
+          </article>
+
+          <article class="settings-card">
+            <h2 data-i18n="languageHeading">Language</h2>
+            <p data-i18n="languageDescription">Preview the interface in multiple languages.</p>
+            <div class="field">
+              <label for="language-select" data-i18n="languageLabel">Interface language</label>
+              <select id="language-select"></select>
+            </div>
+          </article>
+
+          <article class="settings-card">
+            <h2 data-i18n="previewHeading">Mobile preview</h2>
+            <p data-i18n="previewDescription">Simulate the phone layout inside the browser.</p>
+            <button id="mobile-toggle" class="secondary-btn" type="button">Enable mobile frame</button>
           </article>
         </div>
       </section>
     </main>
 
     <footer class="app-footer">
-      <p>INFO3315 Smart Food Delivery Prototype &middot; Designed for remote community resilience</p>
+      <p data-i18n="footerNote">INFO3315 Smart Food Delivery Prototype &middot; Designed for remote community resilience</p>
     </footer>
 
     <script>
@@ -951,28 +1060,553 @@ const suppliers = [
   }
 ];
 
-const trackingStages = [
-  {
-    id: 'preparing',
-    title: 'Preparing hamper',
-    detail: 'Volunteers are sorting surplus produce and packing your box.'
-  },
-  {
-    id: 'driver',
-    title: 'Driver assigned',
-    detail: 'Jade (EV van) is collecting items from the supplier hub.'
-  },
-  {
-    id: 'enroute',
-    title: 'On the way',
-    detail: 'Shared route to your community hub. 2.4 km remaining.'
-  },
-  {
-    id: 'delivered',
-    title: 'Delivered',
-    detail: 'Hamper left in the community cool locker. Enjoy!'
-  }
+const languageOptions = [
+  { value: 'en', labelKey: 'languageEnglish' },
+  { value: 'ja', labelKey: 'languageJapanese' },
+  { value: 'hi', labelKey: 'languageHindi' },
+  { value: 'fr', labelKey: 'languageFrench' },
+  { value: 'zh', labelKey: 'languageChinese' }
 ];
+
+const translations = {
+  en: {
+    brandTagline: 'Sustainable meals for remote communities',
+    navSearch: 'Search',
+    navCompare: 'Compare',
+    navCheckout: 'Checkout',
+    navTracking: 'Tracking',
+    navReport: 'Report',
+    navSettings: 'Settings',
+    homeTitle: 'Find nearby food suppliers',
+    homeInstruction: 'Task 1: Use the filters to locate affordable, low-carbon options that deliver to your area.',
+    searchLabel: 'Search by name or location',
+    searchPlaceholder: "Try 'Outback' or 'Remote'",
+    priceLabel: 'Price band',
+    priceAny: 'Any',
+    priceLow: '$ - Lowest cost',
+    priceMid: '$$ - Balanced',
+    priceHigh: '$$$ - Premium',
+    distanceLabel: 'Max distance (km)',
+    surplusLabel: 'Show surplus food offers only',
+    deliveryLabel: 'Delivery available',
+    distanceValue: '{value} km',
+    suppliersTitle: 'Suppliers near you',
+    suppliersSubtitle: 'Tap a card to compare or add a community hamper to your cart.',
+    compareTitle: 'Compare suppliers',
+    compareInstruction: 'Task 2: Choose two suppliers to see how they differ in freshness, price, and emissions.',
+    compareSupplierA: 'Supplier A',
+    compareSupplierB: 'Supplier B',
+    compareMetricHeading: 'Metric',
+    compareMetricPrice: 'Price',
+    compareMetricFreshness: 'Freshness score',
+    compareMetricCO2: 'Delivery CO2 impact',
+    compareMetricDistance: 'Distance',
+    compareMetricSurplus: 'Surplus food',
+    checkoutTitle: 'Review and place your order',
+    checkoutInstruction: 'Task 3: Confirm the items in your hamper, then place the order to start tracking.',
+    cartSummary: 'Cart summary',
+    cartEmpty: 'Your hamper is empty. Add items from the search view.',
+    totalLabel: 'Total',
+    deliveryPreferences: 'Delivery preferences',
+    deliveryWindow: 'Delivery window',
+    deliveryWindowMorning: '11:00 - 13:00 (midday)',
+    deliveryWindowAfternoon: '13:00 - 15:00 (afternoon)',
+    deliveryWindowEvening: '17:00 - 19:00 (evening)',
+    driverNote: 'Driver note',
+    driverNotePlaceholder: 'Add directions or access notes',
+    placeOrder: 'Place order',
+    goToTracking: 'Go to tracking',
+    trackingTitle: 'Track your delivery',
+    trackingInstruction: 'Task 3 (continued): Follow the delivery stages to monitor when food arrives.',
+    trackingRestart: 'Restart tracking demo',
+    reportTitle: 'Savings & sustainability report',
+    reportInstruction: 'Optional Task: Review your impact after ordering surplus community hampers.',
+    reportSavingsTitle: 'Money saved',
+    reportSavingsDetail: 'Compared to standard metropolitan deliveries.',
+    reportCo2Title: 'CO2 avoided',
+    reportCo2Detail: 'Estimated from lower delivery distances and surplus rescue.',
+    reportMealsTitle: 'Meals rescued',
+    reportMealsDetail: 'Surplus portions diverted from waste this month.',
+    footerNote: 'INFO3315 Smart Food Delivery Prototype · Designed for remote community resilience',
+    settingsTitle: 'Settings',
+    settingsInstruction: 'Adjust theme, language, and preview mode for your study participants.',
+    appearanceHeading: 'Appearance',
+    appearanceDescription: 'Switch between day and night modes to test readability.',
+    languageHeading: 'Language',
+    languageDescription: 'Preview the interface in multiple languages.',
+    languageLabel: 'Interface language',
+    previewHeading: 'Mobile preview',
+    previewDescription: 'Simulate the phone layout inside the browser.',
+    surplusBadge: 'Surplus rescue',
+    compareAction: 'Compare supplier',
+    addToCart: 'Add hamper to cart',
+    deliveryAvailable: 'Delivery available',
+    pickupOnly: 'Pickup only',
+    supplierPriceBand: 'Price band: {price}',
+    supplierDistance: '{distance} km away',
+    supplierFreshness: 'Freshness score: {freshness}/10',
+    supplierCo2: 'Delivery CO2: {co2} kg',
+    hamperMeta: 'Feeds {servings} · Saves {savings}',
+    hamperAdded: 'Hamper added. Review the details, then place your order.',
+    orderPlaced: 'Order placed! Tracking has started with a shared EV route.',
+    cartItemMeta: '{servings} servings · Saves {savings} · CO2 avoided {co2}',
+    removeItem: 'Remove',
+    noMatches: 'No suppliers match your filters. Try widening the distance or price band.',
+    yes: 'Yes',
+    no: 'No',
+    trackingPreparingTitle: 'Preparing hamper',
+    trackingPreparingDetail: 'Volunteers are sorting surplus produce and packing your box.',
+    trackingDriverTitle: 'Driver assigned',
+    trackingDriverDetail: 'Jade (EV van) is collecting items from the supplier hub.',
+    trackingEnrouteTitle: 'On the way',
+    trackingEnrouteDetail: 'Shared route to your community hub. {distance} km remaining.',
+    trackingDeliveredTitle: 'Delivered',
+    trackingDeliveredDetail: 'Hamper left in the community cool locker. Enjoy!',
+    themeSwitchToDark: 'Switch to night mode',
+    themeSwitchToLight: 'Switch to day mode',
+    mobileEnable: 'Enable mobile frame',
+    mobileDisable: 'Disable mobile frame',
+    languageEnglish: 'English',
+    languageJapanese: 'Japanese',
+    languageHindi: 'Hindi',
+    languageFrench: 'French',
+    languageChinese: 'Chinese',
+    priceAverage: '{band} (avg ${average})',
+    freshnessValue: '{value}/10',
+    co2Value: '{value} kg'
+  },
+  ja: {
+    brandTagline: '遠隔地域に持続可能な食事を届けます',
+    navSearch: '検索',
+    navCompare: '比較',
+    navCheckout: '注文確認',
+    navTracking: '配送状況',
+    navReport: 'レポート',
+    navSettings: '設定',
+    homeTitle: '近くの食料供給者を探す',
+    homeInstruction: 'タスク1: フィルターを使って、配送可能で低価格・低炭素の選択肢を見つけましょう。',
+    searchLabel: '名前または地域で検索',
+    searchPlaceholder: '「アウトバック」や「リモート」を検索',
+    priceLabel: '価格帯',
+    priceAny: 'すべて',
+    priceLow: '$ - 手頃',
+    priceMid: '$$ - 標準',
+    priceHigh: '$$$ - プレミアム',
+    distanceLabel: '最大距離 (km)',
+    surplusLabel: '余剰食品のみ表示',
+    deliveryLabel: '配送可能',
+    suppliersTitle: '近くの供給者',
+    suppliersSubtitle: 'カードをタップして比較するか、共同ハンパーをカートに追加します。',
+    compareTitle: '供給者を比較',
+    compareInstruction: 'タスク2: 2つの供給者を選んで鮮度・価格・排出量を比較します。',
+    compareSupplierA: '供給者A',
+    compareSupplierB: '供給者B',
+    compareMetricHeading: '指標',
+    compareMetricPrice: '価格',
+    compareMetricFreshness: '鮮度スコア',
+    compareMetricCO2: '配送CO2',
+    compareMetricDistance: '距離',
+    compareMetricSurplus: '余剰食品',
+    checkoutTitle: '注文内容を確認して確定',
+    checkoutInstruction: 'タスク3: ハンパーを確認し、注文して追跡を開始します。',
+    cartSummary: 'カート概要',
+    cartEmpty: 'カートは空です。検索画面から追加してください。',
+    totalLabel: '合計',
+    deliveryPreferences: '配送設定',
+    deliveryWindow: '配送時間帯',
+    deliveryWindowMorning: '11:00 - 13:00 (午前)',
+    deliveryWindowAfternoon: '13:00 - 15:00 (午後)',
+    deliveryWindowEvening: '17:00 - 19:00 (夕方)',
+    driverNote: 'ドライバーへのメモ',
+    driverNotePlaceholder: '道順や連絡事項を入力',
+    placeOrder: '注文を確定',
+    goToTracking: '配送状況へ',
+    trackingTitle: '配送状況を確認',
+    trackingInstruction: 'タスク3: 配送ステップを追跡して到着を確認しましょう。',
+    trackingRestart: '追跡デモを再開',
+    reportTitle: '節約とサステナビリティレポート',
+    reportInstruction: 'オプション: 余剰ハンパー注文後の効果を確認します。',
+    reportSavingsTitle: '節約金額',
+    reportSavingsDetail: '都市部配送との比較です。',
+    reportCo2Title: '削減したCO2',
+    reportCo2Detail: '短距離配送と余剰活用での推計値。',
+    reportMealsTitle: '救われた食事',
+    reportMealsDetail: '今月廃棄を免れた余剰食の回数。',
+    footerNote: 'INFO3315 Smart Food Delivery プロトタイプ・遠隔地域のレジリエンスのために設計',
+    settingsTitle: '設定',
+    settingsInstruction: '研究参加者向けにテーマ、言語、プレビューを調整します。',
+    appearanceHeading: '表示テーマ',
+    appearanceDescription: '可読性テストのため昼夜モードを切り替えます。',
+    languageHeading: '言語',
+    languageDescription: 'インターフェースを複数言語で確認します。',
+    languageLabel: '表示言語',
+    previewHeading: 'モバイルプレビュー',
+    previewDescription: 'ブラウザ内でスマートフォン表示をシミュレートします。',
+    surplusBadge: '余剰食材',
+    compareAction: 'この供給者を比較',
+    addToCart: 'ハンパーをカートに追加',
+    deliveryAvailable: '配送可能',
+    pickupOnly: '受け取りのみ',
+    supplierPriceBand: '価格帯: {price}',
+    supplierDistance: '{distance} km先',
+    supplierFreshness: '鮮度スコア: {freshness}/10',
+    supplierCo2: '配送CO2: {co2} kg',
+    hamperMeta: '{servings}人分 · {savings}節約',
+    hamperAdded: 'ハンパーを追加しました。内容を確認して注文してください。',
+    orderPlaced: '注文が確定しました。共有EVルートで配送を開始します。',
+    cartItemMeta: '{servings}人分 · {savings}節約 · CO2削減 {co2}',
+    removeItem: '削除',
+    noMatches: '条件に一致する供給者がありません。距離や価格帯を広げてください。',
+    yes: 'はい',
+    no: 'いいえ',
+    trackingPreparingTitle: 'ハンパー準備中',
+    trackingPreparingDetail: 'ボランティアが余剰食材を仕分けして箱詰めしています。',
+    trackingDriverTitle: 'ドライバーを割り当て',
+    trackingDriverDetail: 'Jade（EVバン）が供給ハブで荷物を受け取ります。',
+    trackingEnrouteTitle: '配送中',
+    trackingEnrouteDetail: 'コミュニティハブへ向かっています。残り{distance} km。',
+    trackingDeliveredTitle: 'お届け完了',
+    trackingDeliveredDetail: '共同冷蔵ロッカーにハンパーをお届けしました。',
+    themeSwitchToDark: 'ナイトモードに切り替え',
+    themeSwitchToLight: 'デイモードに切り替え',
+    mobileEnable: 'モバイル枠を有効化',
+    mobileDisable: 'モバイル枠を無効化',
+    languageEnglish: '英語',
+    languageJapanese: '日本語',
+    languageHindi: 'ヒンディー語',
+    languageFrench: 'フランス語',
+    languageChinese: '中国語',
+    priceAverage: '{band} (平均 ${average})',
+    freshnessValue: '{value}/10',
+    co2Value: '{value} kg'
+  },
+  hi: {
+    brandTagline: 'दूरदराज़ समुदायों के लिए टिकाऊ भोजन वितरण',
+    navSearch: 'खोजें',
+    navCompare: 'तुलना',
+    navCheckout: 'ऑर्डर',
+    navTracking: 'ट्रैकिंग',
+    navReport: 'रिपोर्ट',
+    navSettings: 'सेटिंग्स',
+    homeTitle: 'निकट के खाद्य आपूर्तिकर्ता खोजें',
+    homeInstruction: 'कार्य 1: फ़िल्टर का उपयोग करके सस्ती, कम-कार्बन डिलीवरी विकल्प खोजें।',
+    searchLabel: 'नाम या स्थान से खोजें',
+    searchPlaceholder: "'आउटबैक' या 'रिमोट' तलाशें",
+    priceLabel: 'मूल्य श्रेणी',
+    priceAny: 'सभी',
+    priceLow: '$ - किफायती',
+    priceMid: '$$ - संतुलित',
+    priceHigh: '$$$ - प्रीमियम',
+    distanceLabel: 'अधिकतम दूरी (km)',
+    surplusLabel: 'केवल अधिशेष भोजन दिखाएं',
+    deliveryLabel: 'डिलीवरी उपलब्ध',
+    suppliersTitle: 'आपके निकट के आपूर्तिकर्ता',
+    suppliersSubtitle: 'तुलना करने या सामुदायिक हैम्पर को कार्ट में जोड़ने के लिए कार्ड चुनें।',
+    compareTitle: 'आपूर्तिकर्ताओं की तुलना करें',
+    compareInstruction: 'कार्य 2: दो आपूर्तिकर्ता चुनें और कीमत, ताजगी व उत्सर्जन तुलना करें।',
+    compareSupplierA: 'आपूर्तिकर्ता A',
+    compareSupplierB: 'आपूर्तिकर्ता B',
+    compareMetricHeading: 'मापदंड',
+    compareMetricPrice: 'मूल्य',
+    compareMetricFreshness: 'ताजगी स्कोर',
+    compareMetricCO2: 'डिलीवरी CO2 प्रभाव',
+    compareMetricDistance: 'दूरी',
+    compareMetricSurplus: 'अधिशेष भोजन',
+    checkoutTitle: 'ऑर्डर की समीक्षा एवं पुष्टि',
+    checkoutInstruction: 'कार्य 3: हैम्पर की समीक्षा करें, फिर ऑर्डर करें और ट्रैक करें।',
+    cartSummary: 'कार्ट सारांश',
+    cartEmpty: 'आपका हैम्पर खाली है। खोज दृश्य से वस्तुएं जोड़ें।',
+    totalLabel: 'कुल',
+    deliveryPreferences: 'डिलीवरी वरीयताएँ',
+    deliveryWindow: 'डिलीवरी समय',
+    deliveryWindowMorning: '11:00 - 13:00 (दोपहर)',
+    deliveryWindowAfternoon: '13:00 - 15:00 (दोपहर बाद)',
+    deliveryWindowEvening: '17:00 - 19:00 (शाम)',
+    driverNote: 'ड्राइवर नोट',
+    driverNotePlaceholder: 'निर्देश या पहुंच नोट जोड़ें',
+    placeOrder: 'ऑर्डर करें',
+    goToTracking: 'ट्रैकिंग पर जाएं',
+    trackingTitle: 'अपनी डिलीवरी ट्रैक करें',
+    trackingInstruction: 'कार्य 3: डिलीवरी के चरणों को देखें और आगमन पर नज़र रखें।',
+    trackingRestart: 'ट्रैकिंग डेमो पुनः प्रारंभ',
+    reportTitle: 'बचत और स्थिरता रिपोर्ट',
+    reportInstruction: 'वैकल्पिक: अधिशेष हैम्पर ऑर्डर के बाद प्रभाव देखें।',
+    reportSavingsTitle: 'बचाई गई राशि',
+    reportSavingsDetail: 'मानक शहरी डिलीवरी की तुलना।',
+    reportCo2Title: 'टाली गई CO2',
+    reportCo2Detail: 'कम दूरी और अधिशेष बचत से अनुमानित।',
+    reportMealsTitle: 'बचाए गए भोजन',
+    reportMealsDetail: 'इस महीने बर्बादी से बचाए गए अधिशेष भोजन।',
+    footerNote: 'INFO3315 Smart Food Delivery प्रोटोटाइप · दूरस्थ समुदायों के लिए डिज़ाइन',
+    settingsTitle: 'सेटिंग्स',
+    settingsInstruction: 'प्रतिभागियों के लिए थीम, भाषा और पूर्वावलोकन समायोजित करें।',
+    appearanceHeading: 'रूप',
+    appearanceDescription: 'पठनीयता जाँचने हेतु दिन और रात मोड बदलें।',
+    languageHeading: 'भाषा',
+    languageDescription: 'इंटरफ़ेस को कई भाषाओं में देखें।',
+    languageLabel: 'इंटरफ़ेस भाषा',
+    previewHeading: 'मोबाइल पूर्वावलोकन',
+    previewDescription: 'ब्राउज़र में फोन लेआउट का अनुकरण करें।',
+    surplusBadge: 'अधिशेष बचाव',
+    compareAction: 'आपूर्तिकर्ता तुलना करें',
+    addToCart: 'हैम्पर कार्ट में जोड़ें',
+    deliveryAvailable: 'डिलीवरी उपलब्ध',
+    pickupOnly: 'केवल पिकअप',
+    supplierPriceBand: 'मूल्य श्रेणी: {price}',
+    supplierDistance: '{distance} km दूर',
+    supplierFreshness: 'ताजगी स्कोर: {freshness}/10',
+    supplierCo2: 'डिलीवरी CO2: {co2} kg',
+    hamperMeta: '{servings} परोसें · {savings} की बचत',
+    hamperAdded: 'हैम्पर जोड़ा गया। विवरण देखें और ऑर्डर करें।',
+    orderPlaced: 'ऑर्डर हो गया! साझा EV मार्ग से ट्रैकिंग शुरू हुई।',
+    cartItemMeta: '{servings} परोसें · {savings} की बचत · CO2 में {co2} कमी',
+    removeItem: 'हटाएं',
+    noMatches: 'आपके फ़िल्टर से कोई आपूर्तिकर्ता मेल नहीं खा रहा। दूरी या मूल्य सीमा बढ़ाएँ।',
+    yes: 'हाँ',
+    no: 'नहीं',
+    trackingPreparingTitle: 'हैम्पर तैयार हो रहा',
+    trackingPreparingDetail: 'स्वयंसेवक अधिशेष भोजन छांटकर पैक कर रहे हैं।',
+    trackingDriverTitle: 'ड्राइवर नियत',
+    trackingDriverDetail: 'Jade (EV वैन) आपूर्ति केंद्र से वस्तुएँ उठा रही है।',
+    trackingEnrouteTitle: 'रास्ते में',
+    trackingEnrouteDetail: 'आपके सामुदायिक केंद्र की ओर। {distance} km बाकी।',
+    trackingDeliveredTitle: 'डिलीवर हो गया',
+    trackingDeliveredDetail: 'समुदाय के कूल लॉकर में हैम्पर रखा गया है। आनंद लें!',
+    themeSwitchToDark: 'नाइट मोड चालू करें',
+    themeSwitchToLight: 'डे मोड चालू करें',
+    mobileEnable: 'मोबाइल फ्रेम सक्षम करें',
+    mobileDisable: 'मोबाइल फ्रेम अक्षम करें',
+    languageEnglish: 'अंग्रेज़ी',
+    languageJapanese: 'जापानी',
+    languageHindi: 'हिन्दी',
+    languageFrench: 'फ़्रेंच',
+    languageChinese: 'चीनी',
+    priceAverage: '{band} (औसत ${average})',
+    freshnessValue: '{value}/10',
+    co2Value: '{value} किग्रा'
+  },
+  fr: {
+    brandTagline: 'Des repas durables pour les communautés isolées',
+    navSearch: 'Recherche',
+    navCompare: 'Comparer',
+    navCheckout: 'Commande',
+    navTracking: 'Suivi',
+    navReport: 'Rapport',
+    navSettings: 'Paramètres',
+    homeTitle: 'Trouver des fournisseurs proches',
+    homeInstruction: 'Tâche 1 : utilisez les filtres pour trouver des options abordables et peu carbonées livrées chez vous.',
+    searchLabel: 'Rechercher par nom ou lieu',
+    searchPlaceholder: "Essayez 'Outback' ou 'Remote'",
+    priceLabel: 'Tranche de prix',
+    priceAny: 'Toutes',
+    priceLow: '$ - Économique',
+    priceMid: '$$ - Équilibré',
+    priceHigh: '$$$ - Premium',
+    distanceLabel: 'Distance maximale (km)',
+    surplusLabel: 'Afficher uniquement les surplus',
+    deliveryLabel: 'Livraison disponible',
+    suppliersTitle: 'Fournisseurs à proximité',
+    suppliersSubtitle: 'Touchez une carte pour comparer ou ajouter un panier solidaire.',
+    compareTitle: 'Comparer les fournisseurs',
+    compareInstruction: 'Tâche 2 : choisissez deux fournisseurs pour comparer prix, fraîcheur et émissions.',
+    compareSupplierA: 'Fournisseur A',
+    compareSupplierB: 'Fournisseur B',
+    compareMetricHeading: 'Critère',
+    compareMetricPrice: 'Prix',
+    compareMetricFreshness: 'Indice de fraîcheur',
+    compareMetricCO2: 'Impact CO2 livraison',
+    compareMetricDistance: 'Distance',
+    compareMetricSurplus: 'Surplus',
+    checkoutTitle: 'Vérifier et valider la commande',
+    checkoutInstruction: 'Tâche 3 : vérifiez votre panier puis validez pour lancer le suivi.',
+    cartSummary: 'Récapitulatif du panier',
+    cartEmpty: 'Votre panier est vide. Ajoutez des articles depuis la recherche.',
+    totalLabel: 'Total',
+    deliveryPreferences: 'Préférences de livraison',
+    deliveryWindow: 'Créneau de livraison',
+    deliveryWindowMorning: '11:00 - 13:00 (midi)',
+    deliveryWindowAfternoon: '13:00 - 15:00 (après-midi)',
+    deliveryWindowEvening: '17:00 - 19:00 (soir)',
+    driverNote: 'Note pour le livreur',
+    driverNotePlaceholder: 'Ajouter des indications ou un code d’accès',
+    placeOrder: 'Valider la commande',
+    goToTracking: 'Aller au suivi',
+    trackingTitle: 'Suivre la livraison',
+    trackingInstruction: 'Tâche 3 : suivez les étapes de livraison pour connaître l’arrivée.',
+    trackingRestart: 'Relancer la démo de suivi',
+    reportTitle: 'Rapport économies & durabilité',
+    reportInstruction: 'Optionnel : mesurez votre impact après les paniers surplus.',
+    reportSavingsTitle: 'Économies réalisées',
+    reportSavingsDetail: 'Comparé à une livraison urbaine standard.',
+    reportCo2Title: 'CO2 évité',
+    reportCo2Detail: 'Estimation grâce aux distances réduites et aux surplus sauvés.',
+    reportMealsTitle: 'Repas sauvés',
+    reportMealsDetail: 'Portions de surplus détournées du gaspillage ce mois-ci.',
+    footerNote: 'Prototype INFO3315 Smart Food Delivery · Conçu pour la résilience des communautés isolées',
+    settingsTitle: 'Paramètres',
+    settingsInstruction: 'Ajustez thème, langue et aperçu pour vos participants.',
+    appearanceHeading: 'Apparence',
+    appearanceDescription: 'Basculez entre mode jour et nuit pour tester la lisibilité.',
+    languageHeading: 'Langue',
+    languageDescription: 'Apercevez l’interface en plusieurs langues.',
+    languageLabel: 'Langue de l’interface',
+    previewHeading: 'Aperçu mobile',
+    previewDescription: 'Simulez l’affichage téléphone dans le navigateur.',
+    surplusBadge: 'Surplus',
+    compareAction: 'Comparer ce fournisseur',
+    addToCart: 'Ajouter le panier',
+    deliveryAvailable: 'Livraison disponible',
+    pickupOnly: 'Retrait uniquement',
+    supplierPriceBand: 'Tranche de prix : {price}',
+    supplierDistance: '{distance} km',
+    supplierFreshness: 'Indice de fraîcheur : {freshness}/10',
+    supplierCo2: 'CO2 livraison : {co2} kg',
+    hamperMeta: '{servings} portions · Économies {savings}',
+    hamperAdded: 'Panier ajouté. Vérifiez les détails puis validez.',
+    orderPlaced: 'Commande validée ! Le suivi EV partagé a commencé.',
+    cartItemMeta: '{servings} portions · Économies {savings} · CO2 évité {co2}',
+    removeItem: 'Retirer',
+    noMatches: 'Aucun fournisseur ne correspond. Élargissez la distance ou le prix.',
+    yes: 'Oui',
+    no: 'Non',
+    trackingPreparingTitle: 'Préparation du panier',
+    trackingPreparingDetail: 'Les bénévoles trient les surplus et emballent votre commande.',
+    trackingDriverTitle: 'Livreur assigné',
+    trackingDriverDetail: 'Jade (fourgonnette EV) récupère les produits au hub.',
+    trackingEnrouteTitle: 'En route',
+    trackingEnrouteDetail: 'Trajet partagé vers votre hub communautaire. {distance} km restants.',
+    trackingDeliveredTitle: 'Livré',
+    trackingDeliveredDetail: 'Panier déposé dans le casier frigorifique communautaire. Bon appétit !',
+    themeSwitchToDark: 'Passer en mode nuit',
+    themeSwitchToLight: 'Passer en mode jour',
+    mobileEnable: 'Activer le cadre mobile',
+    mobileDisable: 'Désactiver le cadre mobile',
+    languageEnglish: 'Anglais',
+    languageJapanese: 'Japonais',
+    languageHindi: 'Hindi',
+    languageFrench: 'Français',
+    languageChinese: 'Chinois',
+    priceAverage: '{band} (moy. ${average})',
+    freshnessValue: '{value}/10',
+    co2Value: '{value} kg'
+  },
+  zh: {
+    brandTagline: '为偏远社区提供可持续的餐食配送',
+    navSearch: '搜索',
+    navCompare: '对比',
+    navCheckout: '下单',
+    navTracking: '追踪',
+    navReport: '报告',
+    navSettings: '设置',
+    homeTitle: '查找附近的食物供应商',
+    homeInstruction: '任务1：使用筛选器寻找价格实惠、可配送且低碳的选择。',
+    searchLabel: '按名称或位置搜索',
+    searchPlaceholder: '试试搜索“Outback”或“Remote”',
+    priceLabel: '价格区间',
+    priceAny: '不限',
+    priceLow: '$ - 经济',
+    priceMid: '$$ - 适中',
+    priceHigh: '$$$ - 高端',
+    distanceLabel: '最大距离 (km)',
+    surplusLabel: '仅显示余量食品',
+    deliveryLabel: '提供配送',
+    distanceValue: '{value} 公里',
+    suppliersTitle: '附近的供应商',
+    suppliersSubtitle: '点选卡片即可对比或将社区套餐加入购物车。',
+    compareTitle: '比较供应商',
+    compareInstruction: '任务2：选择两个供应商，比较价格、鲜度和碳排。',
+    compareSupplierA: '供应商A',
+    compareSupplierB: '供应商B',
+    compareMetricHeading: '指标',
+    compareMetricPrice: '价格',
+    compareMetricFreshness: '鲜度评分',
+    compareMetricCO2: '配送CO2',
+    compareMetricDistance: '距离',
+    compareMetricSurplus: '余量食品',
+    checkoutTitle: '确认并提交订单',
+    checkoutInstruction: '任务3：确认套餐内容，然后下单并开始追踪。',
+    cartSummary: '购物车摘要',
+    cartEmpty: '购物车为空，请从搜索界面添加。',
+    totalLabel: '合计',
+    deliveryPreferences: '配送偏好',
+    deliveryWindow: '配送时间',
+    deliveryWindowMorning: '11:00 - 13:00 (中午)',
+    deliveryWindowAfternoon: '13:00 - 15:00 (下午)',
+    deliveryWindowEvening: '17:00 - 19:00 (傍晚)',
+    driverNote: '骑手备注',
+    driverNotePlaceholder: '添加路线或门禁说明',
+    placeOrder: '提交订单',
+    goToTracking: '前往追踪',
+    trackingTitle: '追踪配送',
+    trackingInstruction: '任务3：跟随配送阶段，掌握到货时间。',
+    trackingRestart: '重新开始追踪演示',
+    reportTitle: '节约与可持续报告',
+    reportInstruction: '可选：查看订购余量套餐后的影响。',
+    reportSavingsTitle: '节省金额',
+    reportSavingsDetail: '相较于城市标准配送。',
+    reportCo2Title: '减少的CO2',
+    reportCo2Detail: '基于更短配送距离与余量利用的估算。',
+    reportMealsTitle: '挽救的餐食',
+    reportMealsDetail: '本月避免浪费的余量份数。',
+    footerNote: 'INFO3315 智慧食品配送原型·助力偏远社区韧性',
+    settingsTitle: '设置',
+    settingsInstruction: '根据参与者调整主题、语言与预览模式。',
+    appearanceHeading: '外观主题',
+    appearanceDescription: '在日间与夜间模式间切换以测试可读性。',
+    languageHeading: '界面语言',
+    languageDescription: '以多种语言预览界面。',
+    languageLabel: '请选择语言',
+    previewHeading: '手机预览',
+    previewDescription: '在浏览器中模拟手机界面。',
+    surplusBadge: '余量优选',
+    compareAction: '对比该供应商',
+    addToCart: '添加套餐到购物车',
+    deliveryAvailable: '提供配送',
+    pickupOnly: '仅限自提',
+    supplierPriceBand: '价格区间：{price}',
+    supplierDistance: '距离 {distance} 公里',
+    supplierFreshness: '鲜度：{freshness}/10',
+    supplierCo2: '配送CO2：{co2} 公斤',
+    hamperMeta: '可供 {servings} 人 · 节省 {savings}',
+    hamperAdded: '已加入套餐，请确认后下单。',
+    orderPlaced: '订单已提交！共享EV路线开始配送。',
+    cartItemMeta: '共 {servings} 人份 · 节省 {savings} · 减排 {co2}',
+    removeItem: '移除',
+    noMatches: '没有符合筛选条件的供应商，请放宽距离或价格。',
+    yes: '是',
+    no: '否',
+    trackingPreparingTitle: '准备套餐',
+    trackingPreparingDetail: '志愿者正在分拣余量食材并装箱。',
+    trackingDriverTitle: '骑手已安排',
+    trackingDriverDetail: 'Jade（电动货车）正前往供应中心取货。',
+    trackingEnrouteTitle: '配送途中',
+    trackingEnrouteDetail: '正前往社区驿站，剩余 {distance} 公里。',
+    trackingDeliveredTitle: '配送完成',
+    trackingDeliveredDetail: '套餐已放入社区冷柜，请及时取用。',
+    themeSwitchToDark: '切换到夜间模式',
+    themeSwitchToLight: '切换到日间模式',
+    mobileEnable: '开启手机外框',
+    mobileDisable: '关闭手机外框',
+    languageEnglish: '英语',
+    languageJapanese: '日语',
+    languageHindi: '印地语',
+    languageFrench: '法语',
+    languageChinese: '中文',
+    priceAverage: '{band}（平均 ${average}）',
+    freshnessValue: '{value}/10',
+    co2Value: '{value} 公斤'
+  }
+};
+
+const trackingStages = [
+  { id: 'preparing', titleKey: 'trackingPreparingTitle', detailKey: 'trackingPreparingDetail' },
+  { id: 'driver', titleKey: 'trackingDriverTitle', detailKey: 'trackingDriverDetail' },
+  { id: 'enroute', titleKey: 'trackingEnrouteTitle', detailKey: 'trackingEnrouteDetail' },
+  { id: 'delivered', titleKey: 'trackingDeliveredTitle', detailKey: 'trackingDeliveredDetail' }
+];
+
+const localeLangMap = { zh: 'zh-Hans', ja: 'ja', hi: 'hi', fr: 'fr', en: 'en' };
+const trackingEnrouteRemaining = '2.4';
 
 const state = {
   activeView: 'home-view',
@@ -984,10 +1618,16 @@ const state = {
     savings: 0,
     co2Saved: 0,
     meals: 0
-  }
+  },
+  theme: 'light',
+  language: 'en',
+  mobilePreview: false,
+  filteredSuppliers: suppliers.slice()
 };
 
 const elements = {};
+
+document.addEventListener('DOMContentLoaded', init);
 
 function init() {
   cacheElements();
@@ -995,23 +1635,22 @@ function init() {
   bindFilters();
   bindCheckout();
   bindTrackingControls();
+  bindSettings();
   renderSupplierFilters();
-  renderSuppliers(suppliers);
+  state.filteredSuppliers = suppliers.slice();
+  handleFilterChange();
   populateComparisonSelectors();
   updateComparison();
-  updateCartUI();
-  renderTrackingSteps();
-  updateTrackingUI();
+  applyTheme();
+  applyMobilePreview();
+  applyTranslations();
   switchView(state.activeView);
 }
-
-document.addEventListener('DOMContentLoaded', init);
 
 function cacheElements() {
   elements.app = document.getElementById('app');
   elements.navButtons = Array.from(document.querySelectorAll('.nav-btn'));
   elements.views = Array.from(document.querySelectorAll('.view'));
-
   elements.searchInput = document.getElementById('search-input');
   elements.priceFilter = document.getElementById('price-filter');
   elements.distanceFilter = document.getElementById('distance-filter');
@@ -1019,7 +1658,6 @@ function cacheElements() {
   elements.surplusToggle = document.getElementById('surplus-toggle');
   elements.deliveryToggle = document.getElementById('delivery-toggle');
   elements.supplierGrid = document.getElementById('supplier-grid');
-
   elements.compareA = document.getElementById('compare-a');
   elements.compareB = document.getElementById('compare-b');
   elements.compareNameA = document.getElementById('compare-name-a');
@@ -1036,21 +1674,21 @@ function cacheElements() {
     surplusA: document.querySelector('[data-metric="surplus-a"]'),
     surplusB: document.querySelector('[data-metric="surplus-b"]')
   };
-
   elements.cartList = document.getElementById('cart-list');
   elements.cartEmpty = document.getElementById('cart-empty');
   elements.cartTotal = document.getElementById('cart-total');
   elements.placeOrder = document.getElementById('place-order');
   elements.orderStatus = document.getElementById('order-status');
   elements.goToTracking = document.getElementById('go-to-tracking');
-
   elements.reportSavings = document.getElementById('report-savings');
   elements.reportCo2 = document.getElementById('report-co2');
   elements.reportMeals = document.getElementById('report-meals');
-
   elements.trackingSteps = document.getElementById('tracking-steps');
   elements.progressIndicator = document.getElementById('progress-indicator');
   elements.resetTracking = document.getElementById('reset-tracking');
+  elements.themeToggle = document.getElementById('theme-toggle');
+  elements.languageSelect = document.getElementById('language-select');
+  elements.mobileToggle = document.getElementById('mobile-toggle');
 }
 
 function bindNavigation() {
@@ -1063,29 +1701,56 @@ function bindNavigation() {
 }
 
 function bindFilters() {
-  elements.searchInput.addEventListener('input', handleFilterChange);
-  elements.priceFilter.addEventListener('change', handleFilterChange);
-  elements.distanceFilter.addEventListener('input', (event) => {
-    const value = Number(event.target.value);
-    elements.distanceOutput.textContent = `${value} km`;
-    handleFilterChange();
-  });
-  elements.surplusToggle.addEventListener('change', handleFilterChange);
-  elements.deliveryToggle.addEventListener('change', handleFilterChange);
+  if (elements.searchInput) {
+    elements.searchInput.addEventListener('input', handleFilterChange);
+  }
+  if (elements.priceFilter) {
+    elements.priceFilter.addEventListener('change', handleFilterChange);
+  }
+  if (elements.distanceFilter) {
+    elements.distanceFilter.addEventListener('input', () => {
+      updateDistanceOutput();
+      handleFilterChange();
+    });
+  }
+  if (elements.surplusToggle) {
+    elements.surplusToggle.addEventListener('change', handleFilterChange);
+  }
+  if (elements.deliveryToggle) {
+    elements.deliveryToggle.addEventListener('change', handleFilterChange);
+  }
 }
 
 function bindCheckout() {
-  elements.placeOrder.addEventListener('click', handlePlaceOrder);
-  elements.goToTracking.addEventListener('click', () => {
-    switchView('tracking-view');
-  });
+  if (elements.placeOrder) {
+    elements.placeOrder.addEventListener('click', handlePlaceOrder);
+  }
+  if (elements.goToTracking) {
+    elements.goToTracking.addEventListener('click', () => {
+      switchView('tracking-view');
+    });
+  }
 }
 
 function bindTrackingControls() {
-  elements.resetTracking.addEventListener('click', () => {
-    resetTracking();
-    startTracking();
-  });
+  if (elements.resetTracking) {
+    elements.resetTracking.addEventListener('click', () => {
+      resetTracking();
+      startTracking();
+    });
+  }
+}
+
+function bindSettings() {
+  if (elements.themeToggle) {
+    elements.themeToggle.addEventListener('click', toggleTheme);
+  }
+  if (elements.languageSelect) {
+    elements.languageSelect.addEventListener('change', handleLanguageChange);
+  }
+  if (elements.mobileToggle) {
+    elements.mobileToggle.addEventListener('click', toggleMobilePreview);
+  }
 }
 
 function switchView(targetId) {
@@ -1095,26 +1760,40 @@ function switchView(targetId) {
     section.hidden = !isTarget;
     section.classList.toggle('active', isTarget);
   });
-
   elements.navButtons.forEach((button) => {
     button.classList.toggle('active', button.dataset.target === targetId);
   });
-
   window.requestAnimationFrame(() => {
-    elements.app.focus();
+    if (elements.app) {
+      elements.app.focus();
+    }
   });
-
   if (targetId === 'tracking-view' && state.orderPlaced) {
     startTracking();
   }
 }
 
+function renderSupplierFilters() {
+  updateDistanceOutput();
+}
+
+function updateDistanceOutput() {
+  if (!elements.distanceOutput || !elements.distanceFilter) {
+    return;
+  }
+  elements.distanceOutput.textContent = t('distanceValue', { value: elements.distanceFilter.value });
+}
+
 function handleFilterChange() {
+  if (!elements.searchInput) {
+    return;
+  }
+  updateDistanceOutput();
   const query = elements.searchInput.value.trim().toLowerCase();
-  const price = elements.priceFilter.value;
-  const maxDistance = Number(elements.distanceFilter.value);
-  const surplusOnly = elements.surplusToggle.checked;
-  const deliveryOnly = elements.deliveryToggle.checked;
+  const price = elements.priceFilter ? elements.priceFilter.value : 'all';
+  const maxDistance = elements.distanceFilter ? Number(elements.distanceFilter.value) : Number.POSITIVE_INFINITY;
+  const surplusOnly = elements.surplusToggle ? elements.surplusToggle.checked : false;
+  const deliveryOnly = elements.deliveryToggle ? elements.deliveryToggle.checked : false;
 
   const filtered = suppliers.filter((supplier) => {
     const matchesQuery = supplier.name.toLowerCase().includes(query) || supplier.location.toLowerCase().includes(query);
@@ -1125,11 +1804,8 @@ function handleFilterChange() {
     return matchesQuery && matchesPrice && matchesDistance && matchesSurplus && matchesDelivery;
   });
 
+  state.filteredSuppliers = filtered;
   renderSuppliers(filtered);
-}
-
-function renderSupplierFilters() {
-  elements.distanceOutput.textContent = `${elements.distanceFilter.value} km`;
 }
 
 function renderSuppliers(list) {
@@ -1137,17 +1813,34 @@ function renderSuppliers(list) {
     return;
   }
 
-  if (list.length === 0) {
-    elements.supplierGrid.innerHTML = '<p class="empty-state">No suppliers match your filters. Try widening the distance or price band.</p>';
+  if (!list || list.length === 0) {
+    elements.supplierGrid.innerHTML = `<p class="empty-state">${t('noMatches')}</p>`;
     return;
   }
 
   const markup = list
     .map((supplier) => {
-      const badge = supplier.surplus ? '<span class="badge">Surplus rescue</span>' : '';
-      const deliveryText = supplier.delivery ? 'Delivery available' : 'Pickup only';
-      const compareLabel = 'Compare supplier';
+      const badge = supplier.surplus ? `<span class="badge">${t('surplusBadge')}</span>` : '';
+      const deliveryText = supplier.delivery ? t('deliveryAvailable') : t('pickupOnly');
+      const compareLabel = t('compareAction');
+      const addLabel = t('addToCart');
       const item = supplier.items[0];
+      const priceText = `$${item.price.toFixed(2)}`;
+      const savingsText = `$${item.savings.toFixed(2)}`;
+      const hamperMeta = t('hamperMeta', {
+        price: priceText,
+        servings: item.servings,
+        savings: savingsText
+      });
+      const supplierMeta = [
+        t('supplierPriceBand', { price: supplier.price }),
+        t('supplierDistance', { distance: supplier.distance }),
+        t('supplierFreshness', { freshness: supplier.freshness }),
+        t('supplierCo2', { co2: supplier.co2 })
+      ]
+        .map((content) => `<span>${content}</span>`)
+        .join('');
+
       return `
         <article class="supplier-card" data-supplier="${supplier.id}">
           <div class="supplier-header">
@@ -1158,19 +1851,14 @@ function renderSuppliers(list) {
             ${badge}
           </div>
           <p>${supplier.description}</p>
-          <div class="supplier-meta">
-            <span>Price band: ${supplier.price}</span>
-            <span>${supplier.distance} km away</span>
-            <span>Freshness score: ${supplier.freshness}/10</span>
-            <span>Delivery CO2: ${supplier.co2} kg</span>
-          </div>
+          <div class="supplier-meta">${supplierMeta}</div>
           <div class="hamper-summary">
             <h4>${item.name}</h4>
             <p>${item.notes}</p>
-            <p><strong>$${item.price.toFixed(2)}</strong> &middot; Feeds ${item.servings} &middot; Saves $${item.savings.toFixed(2)}</p>
+            <p><strong>${priceText}</strong> &middot; ${hamperMeta}</p>
           </div>
           <div class="action-row">
-            <button class="primary-btn" data-action="add-cart" data-supplier="${supplier.id}" data-item="${item.id}">Add hamper to cart</button>
+            <button class="primary-btn" data-action="add-cart" data-supplier="${supplier.id}" data-item="${item.id}">${addLabel}</button>
             <button class="secondary-btn" data-action="compare" data-supplier="${supplier.id}">${compareLabel}</button>
           </div>
           <p class="supplier-footnote">${deliveryText}</p>
@@ -1199,7 +1887,7 @@ function renderSuppliers(list) {
 
 function addToCart(supplierId, itemId) {
   const supplier = suppliers.find((entry) => entry.id === supplierId);
-  const item = supplier?.items.find((entry) => entry.id === itemId);
+  const item = supplier ? supplier.items.find((entry) => entry.id === itemId) : null;
   if (!supplier || !item) {
     return;
   }
@@ -1217,30 +1905,48 @@ function addToCart(supplierId, itemId) {
 
   updateCartUI();
   switchView('checkout-view');
-  elements.orderStatus.textContent = 'Hamper added. Review the details, then place your order.';
+  if (elements.orderStatus) {
+    elements.orderStatus.textContent = t('hamperAdded');
+  }
 }
 
 function updateCartUI() {
+  if (!elements.cartList || !elements.cartTotal || !elements.cartEmpty || !elements.placeOrder) {
+    return;
+  }
+
   const total = state.cart.reduce((sum, entry) => sum + entry.price, 0);
+
   if (state.cart.length === 0) {
     elements.cartList.innerHTML = '';
     elements.cartEmpty.hidden = false;
     elements.placeOrder.disabled = true;
     state.orderPlaced = false;
-    elements.goToTracking.hidden = true;
-    elements.orderStatus.textContent = '';
+    if (elements.goToTracking) {
+      elements.goToTracking.hidden = true;
+    }
+    if (elements.orderStatus) {
+      elements.orderStatus.textContent = '';
+    }
   } else {
     const markup = state.cart
       .map((entry, index) => {
+        const savingsText = `$${entry.savings.toFixed(2)}`;
+        const co2Text = `${entry.co2Saved.toFixed(1)} kg`;
+        const meta = t('cartItemMeta', {
+          servings: entry.servings,
+          savings: savingsText,
+          co2: co2Text
+        });
         return `
           <li class="cart-item">
             <div class="cart-item-info">
               <strong>${entry.supplierName}</strong>
-              <span>${entry.servings} servings &middot; Saves $${entry.savings.toFixed(2)} &middot; CO2 avoided ${entry.co2Saved.toFixed(1)} kg</span>
+              <span>${meta}</span>
             </div>
             <div class="cart-item-actions">
               <span>$${entry.price.toFixed(2)}</span>
-              <button class="ghost-btn" type="button" aria-label="Remove hamper" data-index="${index}">Remove</button>
+              <button class="ghost-btn" type="button" data-index="${index}">${t('removeItem')}</button>
             </div>
           </li>
         `;
@@ -1272,62 +1978,88 @@ function removeCartItem(index) {
 }
 
 function handlePlaceOrder() {
-  if (state.cart.length === 0) {
+  if (!elements.placeOrder || state.cart.length === 0) {
     return;
   }
 
   state.orderPlaced = true;
-  elements.orderStatus.textContent = 'Order placed! Tracking has started with a shared EV route.';
-  elements.goToTracking.hidden = false;
   elements.placeOrder.disabled = true;
+  if (elements.orderStatus) {
+    elements.orderStatus.textContent = t('orderPlaced');
+  }
+  if (elements.goToTracking) {
+    elements.goToTracking.hidden = false;
+  }
 }
 
 function populateComparisonSelectors() {
+  if (!elements.compareA || !elements.compareB) {
+    return;
+  }
   const options = suppliers
     .map((supplier) => `<option value="${supplier.id}">${supplier.name}</option>`)
     .join('');
   elements.compareA.innerHTML = options;
   elements.compareB.innerHTML = options;
-  elements.compareA.selectedIndex = 0;
-  elements.compareB.selectedIndex = 1;
-
+  if (suppliers.length > 0) {
+    elements.compareA.selectedIndex = 0;
+  }
+  if (suppliers.length > 1) {
+    elements.compareB.selectedIndex = 1;
+  }
   elements.compareA.addEventListener('change', updateComparison);
   elements.compareB.addEventListener('change', updateComparison);
 }
 
 function prepareComparison(supplierId) {
+  if (!elements.compareA || !elements.compareB) {
+    return;
+  }
   const currentA = elements.compareA.value;
   const currentB = elements.compareB.value;
-
   if (supplierId === currentA || supplierId === currentB) {
     switchView('compare-view');
     updateComparison();
     return;
   }
-
   elements.compareB.value = supplierId;
-
   switchView('compare-view');
   updateComparison();
 }
 
 function updateComparison() {
+  if (!elements.compareA || !elements.compareB) {
+    return;
+  }
   const supplierA = suppliers.find((entry) => entry.id === elements.compareA.value) || suppliers[0];
   const supplierB = suppliers.find((entry) => entry.id === elements.compareB.value) || suppliers[1];
-
-  elements.compareNameA.textContent = supplierA.name;
-  elements.compareNameB.textContent = supplierB.name;
-
-  elements.compareMetrics.priceA.textContent = `${supplierA.price} (avg $${supplierA.averageBasket.toFixed(2)})`;
-  elements.compareMetrics.priceB.textContent = `${supplierB.price} (avg $${supplierB.averageBasket.toFixed(2)})`;
-  elements.compareMetrics.freshnessA.textContent = `${supplierA.freshness}/10`;
-  elements.compareMetrics.freshnessB.textContent = `${supplierB.freshness}/10`;
-  elements.compareMetrics.co2A.textContent = `${supplierA.co2} kg`;
-  elements.compareMetrics.co2B.textContent = `${supplierB.co2} kg`;
-  elements.compareMetrics.distanceA.textContent = `${supplierA.distance} km`;
-  elements.compareMetrics.distanceB.textContent = `${supplierB.distance} km`;
-  elements.compareMetrics.surplusA.textContent = supplierA.surplus ? 'Yes' : 'No';
-  elements.compareMetrics.surplusB.textContent = supplierB.surplus ? 'Yes' : 'No';
+  if (!supplierA || !supplierB) {
+    return;
+  }
+  if (elements.compareNameA) {
+    elements.compareNameA.textContent = supplierA.name;
+  }
+  if (elements.compareNameB) {
+    elements.compareNameB.textContent = supplierB.name;
+  }
+  const averageA = supplierA.averageBasket.toFixed(2);
+  const averageB = supplierB.averageBasket.toFixed(2);
+  elements.compareMetrics.priceA.textContent = t('priceAverage', {
+    band: supplierA.price,
+    average: averageA
+  });
+  elements.compareMetrics.priceB.textContent = t('priceAverage', {
+    band: supplierB.price,
+    average: averageB
+  });
+  elements.compareMetrics.freshnessA.textContent = t('freshnessValue', { value: supplierA.freshness });
+  elements.compareMetrics.freshnessB.textContent = t('freshnessValue', { value: supplierB.freshness });
+  elements.compareMetrics.co2A.textContent = t('co2Value', { value: supplierA.co2 });
+  elements.compareMetrics.co2B.textContent = t('co2Value', { value: supplierB.co2 });
+  elements.compareMetrics.distanceA.textContent = t('distanceValue', { value: supplierA.distance });
+  elements.compareMetrics.distanceB.textContent = t('distanceValue', { value: supplierB.distance });
+  elements.compareMetrics.surplusA.textContent = supplierA.surplus ? t('yes') : t('no');
+  elements.compareMetrics.surplusB.textContent = supplierB.surplus ? t('yes') : t('no');
 }
 
 function startTracking() {
@@ -1355,12 +2087,18 @@ function resetTracking() {
 }
 
 function renderTrackingSteps() {
+  if (!elements.trackingSteps) {
+    return;
+  }
   const markup = trackingStages
     .map((stage) => {
+      const detail = stage.detailKey === 'trackingEnrouteDetail'
+        ? t(stage.detailKey, { distance: trackingEnrouteRemaining })
+        : t(stage.detailKey);
       return `
         <li class="tracking-step" data-stage="${stage.id}">
-          <span>${stage.title}</span>
-          <span class="tracking-detail">${stage.detail}</span>
+          <span>${t(stage.titleKey)}</span>
+          <span class="tracking-detail">${detail}</span>
         </li>
       `;
     })
@@ -1369,21 +2107,124 @@ function renderTrackingSteps() {
 }
 
 function updateTrackingUI() {
+  if (!elements.trackingSteps || !elements.progressIndicator) {
+    return;
+  }
   const steps = Array.from(elements.trackingSteps.querySelectorAll('.tracking-step'));
   steps.forEach((step, index) => {
     step.classList.toggle('active', index <= state.trackingIndex);
   });
-
   const progress = (state.trackingIndex / (trackingStages.length - 1)) * 100;
   elements.progressIndicator.style.width = `${progress}%`;
 }
 
 function updateReport() {
-  elements.reportSavings.textContent = `$${state.totals.savings.toFixed(2)}`;
-  elements.reportCo2.textContent = `${state.totals.co2Saved.toFixed(1)} kg`;
-  elements.reportMeals.textContent = `${state.totals.meals}`;
+  if (elements.reportSavings) {
+    elements.reportSavings.textContent = `$${state.totals.savings.toFixed(2)}`;
+  }
+  if (elements.reportCo2) {
+    elements.reportCo2.textContent = `${state.totals.co2Saved.toFixed(1)} kg`;
+  }
+  if (elements.reportMeals) {
+    elements.reportMeals.textContent = `${state.totals.meals}`;
+  }
 }
 
+function applyTheme() {
+  document.body.dataset.theme = state.theme;
+  updateThemeToggleLabel();
+}
+
+function toggleTheme() {
+  state.theme = state.theme === 'light' ? 'dark' : 'light';
+  applyTheme();
+}
+
+function updateThemeToggleLabel() {
+  if (!elements.themeToggle) {
+    return;
+  }
+  elements.themeToggle.textContent = state.theme === 'light' ? t('themeSwitchToDark') : t('themeSwitchToLight');
+  elements.themeToggle.setAttribute('aria-pressed', state.theme === 'dark');
+}
+
+function applyMobilePreview() {
+  document.body.classList.toggle('mobile-preview', state.mobilePreview);
+  updateMobileToggleLabel();
+}
+
+function toggleMobilePreview() {
+  state.mobilePreview = !state.mobilePreview;
+  applyMobilePreview();
+}
+
+function updateMobileToggleLabel() {
+  if (!elements.mobileToggle) {
+    return;
+  }
+  elements.mobileToggle.textContent = state.mobilePreview ? t('mobileDisable') : t('mobileEnable');
+  elements.mobileToggle.setAttribute('aria-pressed', state.mobilePreview);
+}
+
+function renderLanguageOptions() {
+  if (!elements.languageSelect) {
+    return;
+  }
+  const options = languageOptions
+    .map((option) => `<option value="${option.value}">${t(option.labelKey)}</option>`)
+    .join('');
+  elements.languageSelect.innerHTML = options;
+  elements.languageSelect.value = state.language;
+}
+
+function handleLanguageChange(event) {
+  const newLanguage = event.target.value;
+  if (!translations[newLanguage]) {
+    return;
+  }
+  state.language = newLanguage;
+  applyTranslations();
+}
+
+function applyTranslations() {
+  document.documentElement.lang = localeLangMap[state.language] || state.language;
+
+  document.querySelectorAll('[data-i18n]').forEach((element) => {
+    const key = element.getAttribute('data-i18n');
+    element.textContent = t(key);
+  });
+
+  document.querySelectorAll('[data-i18n-placeholder]').forEach((element) => {
+    const key = element.getAttribute('data-i18n-placeholder');
+    element.setAttribute('placeholder', t(key));
+  });
+
+  document.querySelectorAll('[data-i18n-aria-label]').forEach((element) => {
+    const key = element.getAttribute('data-i18n-aria-label');
+    element.setAttribute('aria-label', t(key));
+  });
+
+  renderLanguageOptions();
+  updateDistanceOutput();
+  renderSuppliers(state.filteredSuppliers);
+  updateCartUI();
+  renderTrackingSteps();
+  updateTrackingUI();
+  updateComparison();
+  updateThemeToggleLabel();
+  updateMobileToggleLabel();
+}
+
+function t(key, vars = {}) {
+  const dictionary = translations[state.language] || translations.en;
+  let template = dictionary[key];
+  if (template === undefined) {
+    template = translations.en[key] || '';
+  }
+  return template.replace(/\{(.*?)\}/g, (match, token) => {
+    return Object.prototype.hasOwnProperty.call(vars, token) ? vars[token] : match;
+  });
+}
 </script>
   </body>
 </html>
