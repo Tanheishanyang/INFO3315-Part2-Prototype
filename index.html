@@ -13,11 +13,20 @@
   --color-surface: #ffffff;
   --color-surface-alt: #e7f1eb;
   --color-primary: #2d7a56;
+  --color-primary-hover: #256648;
   --color-primary-light: #57b287;
   --color-accent: #4aa86b;
   --color-text: #1f2a24;
   --color-muted: #5a6c60;
   --color-border: #d5e0d8;
+  --color-input-bg: #ffffff;
+  --color-input-text: #1f2a24;
+  --color-on-primary: #ffffff;
+  --color-secondary-text: #2d7a56;
+  --color-secondary-hover: rgba(87, 178, 135, 0.18);
+  --color-focus-outline: rgba(87, 178, 135, 0.24);
+  --color-focus-ring: rgba(87, 178, 135, 0.6);
+  --scrollbar-thumb: rgba(45, 122, 86, 0.4);
   --shadow-sm: 0 6px 18px rgba(41, 71, 54, 0.08);
   --radius-lg: 20px;
   --radius-md: 14px;
@@ -29,13 +38,22 @@ body[data-theme='dark'] {
   --color-bg: #101812;
   --color-surface: #17241d;
   --color-surface-alt: #1f2f25;
-  --color-primary: #6ed09d;
-  --color-primary-light: #89e6b5;
+  --color-primary: #2f9f6f;
+  --color-primary-hover: #3ab880;
+  --color-primary-light: #49c891;
   --color-accent: #6ed09d;
-  --color-text: #f3f7f3;
+  --color-text: #f1f7f2;
   --color-muted: #b8c7bd;
   --color-border: #2a3a31;
-  --shadow-sm: 0 10px 26px rgba(0, 0, 0, 0.45);
+  --color-input-bg: #203329;
+  --color-input-text: #f1f7f2;
+  --color-on-primary: #0b1f15;
+  --color-secondary-text: #6ed09d;
+  --color-secondary-hover: rgba(110, 208, 157, 0.18);
+  --color-focus-outline: rgba(110, 208, 157, 0.35);
+  --color-focus-ring: rgba(110, 208, 157, 0.7);
+  --scrollbar-thumb: rgba(110, 208, 157, 0.45);
+  --shadow-sm: 0 6px 18px rgba(0, 0, 0, 0.35);
 }
 
 * {
@@ -73,6 +91,7 @@ button {
 
 button:disabled {
   cursor: not-allowed;
+  opacity: 0.6;
 }
 
 .top-bar {
@@ -128,23 +147,24 @@ button:disabled {
   padding: 10px 18px;
   border-radius: 999px;
   font-weight: 600;
-  transition: var(--transition);
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition);
   white-space: nowrap;
 }
 
 .nav-btn:hover,
 .nav-btn:focus-visible {
-  border-color: var(--color-primary-light);
+  border-color: var(--color-primary);
   color: var(--color-primary);
 }
 
 .nav-btn.active {
   background: var(--color-primary);
   border-color: var(--color-primary);
-  color: #ffffff;
+  color: var(--color-on-primary);
 }
 
 main {
+  flex: 1 0 auto;
   padding: 0 20px 80px;
 }
 
@@ -196,8 +216,9 @@ main {
   padding: 12px;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
-  background: #ffffff;
-  transition: border-color var(--transition);
+  background: var(--color-input-bg);
+  color: var(--color-input-text);
+  transition: border-color var(--transition), background-color var(--transition), color var(--transition);
 }
 
 .field input:focus-visible,
@@ -205,11 +226,16 @@ main {
 .field textarea:focus-visible {
   border-color: var(--color-primary);
   outline: none;
-  box-shadow: 0 0 0 3px rgba(87, 178, 135, 0.24);
+  box-shadow: 0 0 0 3px var(--color-focus-outline);
 }
 
 .field textarea {
   resize: vertical;
+}
+
+.field input::placeholder,
+.field textarea::placeholder {
+  color: var(--color-muted);
 }
 
 .output {
@@ -341,38 +367,39 @@ main {
   border-radius: 999px;
   padding: 10px 20px;
   font-weight: 600;
-  border: none;
-  transition: var(--transition);
+  border: 1px solid transparent;
+  transition: background-color var(--transition), color var(--transition), border-color var(--transition), box-shadow var(--transition);
 }
 
 .primary-btn {
   background: var(--color-primary);
-  color: #ffffff;
+  color: var(--color-on-primary);
 }
 
 .primary-btn:hover,
 .primary-btn:focus-visible {
-  background: var(--color-primary-light);
+  background: var(--color-primary-hover);
 }
 
 .secondary-btn {
   background: var(--color-surface-alt);
-  color: var(--color-primary);
+  color: var(--color-secondary-text);
 }
 
 .secondary-btn:hover,
 .secondary-btn:focus-visible {
-  background: rgba(87, 178, 135, 0.26);
+  background: var(--color-secondary-hover);
 }
 
 .ghost-btn {
   background: transparent;
-  border: 1px solid var(--color-border);
+  border-color: var(--color-border);
+  color: var(--color-text);
 }
 
 .ghost-btn:hover,
 .ghost-btn:focus-visible {
-  border-color: var(--color-primary-light);
+  border-color: var(--color-primary);
   color: var(--color-primary);
 }
 
@@ -608,7 +635,7 @@ main {
 .ghost-btn:focus-visible,
 .supplier-card:focus-visible,
 #reset-tracking:focus-visible {
-  outline: 3px solid rgba(87, 178, 135, 0.6);
+  outline: 3px solid var(--color-focus-ring);
   outline-offset: 2px;
 }
 
@@ -616,41 +643,79 @@ main {
   outline: none;
 }
 
-body.mobile-preview {
+#phone-frame {
+  min-height: 100vh;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
   background: var(--color-bg);
+  transition: border-radius 0.3s ease, box-shadow 0.3s ease, width 0.3s ease;
+  overflow: visible;
 }
 
-body.mobile-preview .top-bar,
-body.mobile-preview .app-footer {
-  max-width: 430px;
-  margin-left: auto;
-  margin-right: auto;
+body.mobile-preview {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 32px 0;
+  background: var(--color-bg);
+  width: 100%;
+  overflow: hidden;
+}
+
+body.mobile-preview #phone-frame {
+  width: min(430px, calc(100vw - 48px));
+  height: 800px;
+  max-height: calc(100vh - 64px);
+  overflow-y: auto;
+  border-radius: 36px;
+  box-shadow: 0 24px 60px rgba(16, 24, 18, 0.45);
+  border: 1px solid var(--color-border);
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) transparent;
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable both-edges;
+}
+
+body.mobile-preview #phone-frame::-webkit-scrollbar {
+  width: 6px;
+}
+
+body.mobile-preview #phone-frame::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+body.mobile-preview #phone-frame::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbar-thumb);
+  border-radius: 999px;
 }
 
 body.mobile-preview .top-bar {
-  margin-top: 24px;
-  border-radius: 28px 28px 0 0;
-  position: static;
-  box-shadow: 0 0 0 10px rgba(31, 42, 36, 0.18);
+  border-radius: 32px 32px 0 0;
+  margin: 0;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+  width: 100%;
 }
 
 body.mobile-preview main#app {
-  max-width: 430px;
-  margin: 0 auto 60px;
-  border-radius: 28px;
-  box-shadow: 0 0 0 10px rgba(31, 42, 36, 0.18);
-  padding: 24px 18px 80px;
-  background: var(--color-bg);
+  padding: 0 18px 72px;
+  width: 100%;
 }
 
 body.mobile-preview .view {
   margin: 24px auto;
+  max-width: 100%;
+  width: 100%;
 }
 
 body.mobile-preview .app-footer {
-  border-radius: 0 0 28px 28px;
-  box-shadow: 0 0 0 10px rgba(31, 42, 36, 0.18);
+  border-radius: 0 0 32px 32px;
   padding: 20px 18px;
+  width: 100%;
 }
 
 body.mobile-preview .main-nav {
@@ -690,15 +755,16 @@ body.mobile-preview .main-nav {
 </style>
   </head>
   <body>
+    <div id="phone-frame">
     <header class="top-bar">
       <div class="brand">
         <span aria-hidden="true">&#129379;</span>
       <div>
-        <p class="brand-name">Smart Food Delivery</p>
+        <p class="brand-name" data-i18n="brandName">Smart Food Delivery</p>
         <p class="brand-tagline" data-i18n="brandTagline">Sustainable meals for remote communities</p>
       </div>
       </div>
-      <nav class="main-nav" aria-label="Primary">
+      <nav class="main-nav" aria-label="Primary" data-i18n-aria-label="navAriaLabel">
         <button class="nav-btn" data-target="home-view" data-i18n="navSearch">Search</button>
         <button class="nav-btn" data-target="compare-view" data-i18n="navCompare">Compare</button>
         <button class="nav-btn" data-target="checkout-view" data-i18n="navCheckout">Checkout</button>
@@ -715,7 +781,7 @@ body.mobile-preview .main-nav {
           <p class="view-instruction" data-i18n="homeInstruction">Task 1: Use the filters to locate affordable, low-carbon options that deliver to your area.</p>
         </header>
 
-        <form id="filter-form" class="filter-panel" aria-label="Search filters">
+        <form id="filter-form" class="filter-panel" aria-label="Search filters" data-i18n-aria-label="filtersAriaLabel">
           <div class="field">
             <label for="search-input" data-i18n="searchLabel">Search by name or location</label>
             <input id="search-input" type="search" data-i18n-placeholder="searchPlaceholder" placeholder="Try 'Outback' or 'Remote'" />
@@ -822,7 +888,7 @@ body.mobile-preview .main-nav {
         </header>
 
         <div class="checkout-layout">
-          <section class="cart" aria-label="Cart contents">
+          <section class="cart" aria-label="Cart contents" data-i18n-aria-label="cartAriaLabel">
             <h2 data-i18n="cartSummary">Cart summary</h2>
             <ul id="cart-list" class="cart-list"></ul>
             <p id="cart-empty" class="empty-state" data-i18n="cartEmpty">Your hamper is empty. Add items from the search view.</p>
@@ -832,7 +898,7 @@ body.mobile-preview .main-nav {
             </div>
           </section>
 
-          <section class="checkout-details" aria-label="Delivery preferences">
+          <section class="checkout-details" aria-label="Delivery preferences" data-i18n-aria-label="deliveryAriaLabel">
             <h2 data-i18n="deliveryPreferences">Delivery preferences</h2>
             <div class="field">
               <label for="delivery-window" data-i18n="deliveryWindow">Delivery window</label>
@@ -862,7 +928,7 @@ body.mobile-preview .main-nav {
         </header>
 
         <section class="tracking-card" aria-live="polite">
-          <div class="map-placeholder" role="img" aria-label="Stylised delivery map with highlighted route"></div>
+          <div class="map-placeholder" role="img" aria-label="Stylised delivery map with highlighted route" data-i18n-aria-label="mapAriaLabel"></div>
           <ol class="tracking-steps" id="tracking-steps"></ol>
           <div class="progress-bar" aria-hidden="true">
             <div id="progress-indicator" class="progress-indicator"></div>
@@ -930,6 +996,8 @@ body.mobile-preview .main-nav {
     <footer class="app-footer">
       <p data-i18n="footerNote">INFO3315 Smart Food Delivery Prototype &middot; Designed for remote community resilience</p>
     </footer>
+
+    </div>
 
     <script>
 const suppliers = [
@@ -1071,16 +1139,19 @@ const languageOptions = [
 const translations = {
   en: {
     brandTagline: 'Sustainable meals for remote communities',
+    brandName: 'Smart Food Delivery',
     navSearch: 'Search',
     navCompare: 'Compare',
     navCheckout: 'Checkout',
     navTracking: 'Tracking',
     navReport: 'Report',
     navSettings: 'Settings',
+    navAriaLabel: 'Primary navigation',
     homeTitle: 'Find nearby food suppliers',
     homeInstruction: 'Task 1: Use the filters to locate affordable, low-carbon options that deliver to your area.',
     searchLabel: 'Search by name or location',
     searchPlaceholder: "Try 'Outback' or 'Remote'",
+    filtersAriaLabel: 'Search filters',
     priceLabel: 'Price band',
     priceAny: 'Any',
     priceLow: '$ - Lowest cost',
@@ -1106,8 +1177,10 @@ const translations = {
     checkoutInstruction: 'Task 3: Confirm the items in your hamper, then place the order to start tracking.',
     cartSummary: 'Cart summary',
     cartEmpty: 'Your hamper is empty. Add items from the search view.',
+    cartAriaLabel: 'Cart contents',
     totalLabel: 'Total',
     deliveryPreferences: 'Delivery preferences',
+    deliveryAriaLabel: 'Delivery preferences',
     deliveryWindow: 'Delivery window',
     deliveryWindowMorning: '11:00 - 13:00 (midday)',
     deliveryWindowAfternoon: '13:00 - 15:00 (afternoon)',
@@ -1119,6 +1192,7 @@ const translations = {
     trackingTitle: 'Track your delivery',
     trackingInstruction: 'Task 3 (continued): Follow the delivery stages to monitor when food arrives.',
     trackingRestart: 'Restart tracking demo',
+    mapAriaLabel: 'Stylised delivery map with highlighted route',
     reportTitle: 'Savings & sustainability report',
     reportInstruction: 'Optional Task: Review your impact after ordering surplus community hampers.',
     reportSavingsTitle: 'Money saved',
@@ -1177,16 +1251,19 @@ const translations = {
   },
   ja: {
     brandTagline: '遠隔地域に持続可能な食事を届けます',
+    brandName: 'スマートフードデリバリー',
     navSearch: '検索',
     navCompare: '比較',
     navCheckout: '注文確認',
     navTracking: '配送状況',
     navReport: 'レポート',
     navSettings: '設定',
+    navAriaLabel: 'メインナビゲーション',
     homeTitle: '近くの食料供給者を探す',
     homeInstruction: 'タスク1: フィルターを使って、配送可能で低価格・低炭素の選択肢を見つけましょう。',
     searchLabel: '名前または地域で検索',
     searchPlaceholder: '「アウトバック」や「リモート」を検索',
+    filtersAriaLabel: '検索フィルター',
     priceLabel: '価格帯',
     priceAny: 'すべて',
     priceLow: '$ - 手頃',
@@ -1211,8 +1288,10 @@ const translations = {
     checkoutInstruction: 'タスク3: ハンパーを確認し、注文して追跡を開始します。',
     cartSummary: 'カート概要',
     cartEmpty: 'カートは空です。検索画面から追加してください。',
+    cartAriaLabel: 'カートの内容',
     totalLabel: '合計',
     deliveryPreferences: '配送設定',
+    deliveryAriaLabel: '配送設定',
     deliveryWindow: '配送時間帯',
     deliveryWindowMorning: '11:00 - 13:00 (午前)',
     deliveryWindowAfternoon: '13:00 - 15:00 (午後)',
@@ -1224,6 +1303,7 @@ const translations = {
     trackingTitle: '配送状況を確認',
     trackingInstruction: 'タスク3: 配送ステップを追跡して到着を確認しましょう。',
     trackingRestart: '追跡デモを再開',
+    mapAriaLabel: '配送ルートを示すスタイライズされた地図',
     reportTitle: '節約とサステナビリティレポート',
     reportInstruction: 'オプション: 余剰ハンパー注文後の効果を確認します。',
     reportSavingsTitle: '節約金額',
@@ -1282,16 +1362,19 @@ const translations = {
   },
   hi: {
     brandTagline: 'दूरदराज़ समुदायों के लिए टिकाऊ भोजन वितरण',
+    brandName: 'स्मार्ट फूड डिलीवरी',
     navSearch: 'खोजें',
     navCompare: 'तुलना',
     navCheckout: 'ऑर्डर',
     navTracking: 'ट्रैकिंग',
     navReport: 'रिपोर्ट',
     navSettings: 'सेटिंग्स',
+    navAriaLabel: 'मुख्य नेविगेशन',
     homeTitle: 'निकट के खाद्य आपूर्तिकर्ता खोजें',
     homeInstruction: 'कार्य 1: फ़िल्टर का उपयोग करके सस्ती, कम-कार्बन डिलीवरी विकल्प खोजें।',
     searchLabel: 'नाम या स्थान से खोजें',
     searchPlaceholder: "'आउटबैक' या 'रिमोट' तलाशें",
+    filtersAriaLabel: 'खोज फ़िल्टर',
     priceLabel: 'मूल्य श्रेणी',
     priceAny: 'सभी',
     priceLow: '$ - किफायती',
@@ -1316,8 +1399,10 @@ const translations = {
     checkoutInstruction: 'कार्य 3: हैम्पर की समीक्षा करें, फिर ऑर्डर करें और ट्रैक करें।',
     cartSummary: 'कार्ट सारांश',
     cartEmpty: 'आपका हैम्पर खाली है। खोज दृश्य से वस्तुएं जोड़ें।',
+    cartAriaLabel: 'कार्ट सामग्री',
     totalLabel: 'कुल',
     deliveryPreferences: 'डिलीवरी वरीयताएँ',
+    deliveryAriaLabel: 'डिलीवरी वरीयताएँ',
     deliveryWindow: 'डिलीवरी समय',
     deliveryWindowMorning: '11:00 - 13:00 (दोपहर)',
     deliveryWindowAfternoon: '13:00 - 15:00 (दोपहर बाद)',
@@ -1329,6 +1414,7 @@ const translations = {
     trackingTitle: 'अपनी डिलीवरी ट्रैक करें',
     trackingInstruction: 'कार्य 3: डिलीवरी के चरणों को देखें और आगमन पर नज़र रखें।',
     trackingRestart: 'ट्रैकिंग डेमो पुनः प्रारंभ',
+    mapAriaLabel: 'उज्ज्वल मार्ग वाला शैलीकृत डिलीवरी मानचित्र',
     reportTitle: 'बचत और स्थिरता रिपोर्ट',
     reportInstruction: 'वैकल्पिक: अधिशेष हैम्पर ऑर्डर के बाद प्रभाव देखें।',
     reportSavingsTitle: 'बचाई गई राशि',
@@ -1387,16 +1473,19 @@ const translations = {
   },
   fr: {
     brandTagline: 'Des repas durables pour les communautés isolées',
+    brandName: 'Livraison Alimentaire Intelligente',
     navSearch: 'Recherche',
     navCompare: 'Comparer',
     navCheckout: 'Commande',
     navTracking: 'Suivi',
     navReport: 'Rapport',
     navSettings: 'Paramètres',
+    navAriaLabel: 'Navigation principale',
     homeTitle: 'Trouver des fournisseurs proches',
     homeInstruction: 'Tâche 1 : utilisez les filtres pour trouver des options abordables et peu carbonées livrées chez vous.',
     searchLabel: 'Rechercher par nom ou lieu',
     searchPlaceholder: "Essayez 'Outback' ou 'Remote'",
+    filtersAriaLabel: 'Filtres de recherche',
     priceLabel: 'Tranche de prix',
     priceAny: 'Toutes',
     priceLow: '$ - Économique',
@@ -1421,8 +1510,10 @@ const translations = {
     checkoutInstruction: 'Tâche 3 : vérifiez votre panier puis validez pour lancer le suivi.',
     cartSummary: 'Récapitulatif du panier',
     cartEmpty: 'Votre panier est vide. Ajoutez des articles depuis la recherche.',
+    cartAriaLabel: 'Contenu du panier',
     totalLabel: 'Total',
     deliveryPreferences: 'Préférences de livraison',
+    deliveryAriaLabel: 'Préférences de livraison',
     deliveryWindow: 'Créneau de livraison',
     deliveryWindowMorning: '11:00 - 13:00 (midi)',
     deliveryWindowAfternoon: '13:00 - 15:00 (après-midi)',
@@ -1434,6 +1525,7 @@ const translations = {
     trackingTitle: 'Suivre la livraison',
     trackingInstruction: 'Tâche 3 : suivez les étapes de livraison pour connaître l’arrivée.',
     trackingRestart: 'Relancer la démo de suivi',
+    mapAriaLabel: 'Carte stylisée de livraison avec itinéraire mis en évidence',
     reportTitle: 'Rapport économies & durabilité',
     reportInstruction: 'Optionnel : mesurez votre impact après les paniers surplus.',
     reportSavingsTitle: 'Économies réalisées',
@@ -1492,16 +1584,19 @@ const translations = {
   },
   zh: {
     brandTagline: '为偏远社区提供可持续的餐食配送',
+    brandName: '智慧食品配送',
     navSearch: '搜索',
     navCompare: '对比',
     navCheckout: '下单',
     navTracking: '追踪',
     navReport: '报告',
     navSettings: '设置',
+    navAriaLabel: '主导航',
     homeTitle: '查找附近的食物供应商',
     homeInstruction: '任务1：使用筛选器寻找价格实惠、可配送且低碳的选择。',
     searchLabel: '按名称或位置搜索',
     searchPlaceholder: '试试搜索“Outback”或“Remote”',
+    filtersAriaLabel: '搜索筛选',
     priceLabel: '价格区间',
     priceAny: '不限',
     priceLow: '$ - 经济',
@@ -1527,8 +1622,10 @@ const translations = {
     checkoutInstruction: '任务3：确认套餐内容，然后下单并开始追踪。',
     cartSummary: '购物车摘要',
     cartEmpty: '购物车为空，请从搜索界面添加。',
+    cartAriaLabel: '购物车内容',
     totalLabel: '合计',
     deliveryPreferences: '配送偏好',
+    deliveryAriaLabel: '配送偏好',
     deliveryWindow: '配送时间',
     deliveryWindowMorning: '11:00 - 13:00 (中午)',
     deliveryWindowAfternoon: '13:00 - 15:00 (下午)',
@@ -1540,6 +1637,7 @@ const translations = {
     trackingTitle: '追踪配送',
     trackingInstruction: '任务3：跟随配送阶段，掌握到货时间。',
     trackingRestart: '重新开始追踪演示',
+    mapAriaLabel: '带高亮路线的配送示意图',
     reportTitle: '节约与可持续报告',
     reportInstruction: '可选：查看订购余量套餐后的影响。',
     reportSavingsTitle: '节省金额',
@@ -1648,6 +1746,7 @@ function init() {
 }
 
 function cacheElements() {
+  elements.phoneFrame = document.getElementById('phone-frame');
   elements.app = document.getElementById('app');
   elements.navButtons = Array.from(document.querySelectorAll('.nav-btn'));
   elements.views = Array.from(document.querySelectorAll('.view'));
@@ -2150,6 +2249,9 @@ function updateThemeToggleLabel() {
 
 function applyMobilePreview() {
   document.body.classList.toggle('mobile-preview', state.mobilePreview);
+  if (elements.phoneFrame) {
+    elements.phoneFrame.scrollTop = 0;
+  }
   updateMobileToggleLabel();
 }
 
