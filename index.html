@@ -314,6 +314,7 @@ main {
 .badge {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 6px 10px;
   border-radius: 999px;
@@ -904,6 +905,54 @@ body.mobile-preview .view {
 body.mobile-preview .supplier-grid {
   grid-template-columns: 1fr;
   gap: 18px;
+}
+
+body.mobile-preview .filter-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 18px 16px;
+}
+
+body.mobile-preview .field-group {
+  flex-direction: column;
+  gap: 14px;
+}
+
+body.mobile-preview .field,
+body.mobile-preview .field-group .field {
+  width: 100%;
+}
+
+body.mobile-preview .filter-panel .field input,
+body.mobile-preview .filter-panel .field select,
+body.mobile-preview .filter-panel .field textarea {
+  width: 100%;
+}
+
+body.mobile-preview .toggles {
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+body.mobile-preview .toggle {
+  width: 100%;
+  justify-content: flex-start;
+}
+
+body.mobile-preview .toggle span {
+  flex: 0 1 auto;
+}
+
+body.mobile-preview .checkout-layout {
+  grid-template-columns: 1fr;
+  gap: 16px;
+}
+
+body.mobile-preview .report-grid {
+  grid-template-columns: 1fr;
+  gap: 16px;
 }
 
 body.mobile-preview .app-footer {
