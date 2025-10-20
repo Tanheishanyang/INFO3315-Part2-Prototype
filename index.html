@@ -193,11 +193,12 @@ main {
   display: grid;
   gap: 16px;
   margin: 24px 0 32px;
-  padding: 20px;
+  padding: 16px 12px 20px; 
   background: var(--color-surface);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-sm);
 }
+
 
 .field,
 .field-group {
@@ -676,18 +677,16 @@ body.mobile-preview {
 }
 
 body.mobile-preview #phone-frame {
-  width: min(400px, calc(100vw - 36px));
-  height: 60vh;
-  max-height: 60vh;
+  width: min(480px, calc(100vw - 36px));
+  height: 1000px; 
+  max-height: 120vh; 
   border-radius: 44px;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
   background: linear-gradient(160deg, rgba(45, 122, 86, 0.18), rgba(87, 178, 135, 0.32));
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 28px 60px rgba(16, 24, 18, 0.35);
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 
 body.mobile-preview[data-theme='dark'] #phone-frame {
