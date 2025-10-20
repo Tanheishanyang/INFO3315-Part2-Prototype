@@ -1,491 +1,225 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>INFO3315 Part 2 Prototype</title>
-  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js" defer></script>
-  <style>
-    :root {
-      color-scheme: dark;
-      --bg-start: #060713;
-      --bg-end: #0f1630;
-      --accent: #6d93ff;
-      --accent-strong: #92b2ff;
-      --glow: rgba(109, 147, 255, 0.55);
-      --glow-strong: rgba(155, 196, 255, 0.85);
-      --text-soft: #d6dcff;
-      --text-strong: #fbfdff;
-    }
-
-    * {
-      box-sizing: border-box;
-    }
-
-    [v-cloak] {
-      display: none;
-    }
-
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: radial-gradient(circle at top, var(--bg-end) 0%, var(--bg-start) 50%, #020207 100%);
-      font-family: "Fira Code", "Source Code Pro", Consolas, "Courier New", monospace;
-      color: var(--text-soft);
-      overflow: hidden;
-    }
-
-    body::before,
-    body::after {
-      content: "";
-      position: absolute;
-      width: 60vmax;
-      height: 60vmax;
-      background: radial-gradient(circle, rgba(76, 117, 255, 0.22) 0%, rgba(76, 117, 255, 0) 60%);
-      filter: blur(60px);
-      z-index: 0;
-      animation: drift 18s ease-in-out infinite alternate;
-    }
-
-    body::after {
-      background: radial-gradient(circle, rgba(104, 248, 255, 0.18) 0%, rgba(104, 248, 255, 0) 60%);
-      animation-duration: 24s;
-      animation-direction: alternate-reverse;
-    }
-
-    body::before {
-      top: -20vmax;
-      left: -10vmax;
-    }
-
-    body::after {
-      bottom: -18vmax;
-      right: -8vmax;
-    }
-
-    @keyframes drift {
-      0% {
-        transform: translate3d(0, 0, 0) scale(1);
-      }
-      50% {
-        transform: translate3d(3vmax, -4vmax, 0) scale(1.08);
-      }
-      100% {
-        transform: translate3d(-2vmax, 3vmax, 0) scale(0.96);
-      }
-    }
-
-    #app {
-      position: relative;
-      z-index: 1;
-      width: min(760px, 92vw);
-    }
-
-    .panel {
-      position: relative;
-      padding: 2.8rem clamp(1.6rem, 4vw, 2.8rem);
-      border-radius: 24px;
-      background: linear-gradient(135deg, rgba(18, 26, 56, 0.88), rgba(9, 13, 32, 0.92));
-      border: 1px solid rgba(173, 200, 255, 0.12);
-      box-shadow:
-        0 30px 60px rgba(8, 12, 32, 0.66),
-        inset 0 0 0 1px rgba(122, 154, 255, 0.08),
-        inset 0 0 34px rgba(120, 154, 255, 0.06);
-      overflow: hidden;
-    }
-
-    .panel::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, rgba(109, 147, 255, 0.18), transparent 50%, rgba(83, 238, 255, 0.18) 100%);
-      opacity: 0.9;
-      mix-blend-mode: screen;
-      pointer-events: none;
-    }
-
-    .panel::after {
-      content: "";
-      position: absolute;
-      inset: -180%;
-      background: conic-gradient(from 45deg, rgba(255, 255, 255, 0), rgba(155, 196, 255, 0.4), rgba(255, 255, 255, 0));
-      animation: scan 12s linear infinite;
-      opacity: 0.35;
-      pointer-events: none;
-    }
-
-    @keyframes scan {
-      0% {
-        transform: rotate(0deg);
-      }
-      100% {
-        transform: rotate(360deg);
-      }
-    }
-
-    h1 {
-      margin: 0;
-      font-size: clamp(2.2rem, 5vw, 2.8rem);
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-strong);
-      text-shadow:
-        0 0 12px rgba(144, 168, 255, 0.85),
-        0 0 32px rgba(144, 168, 255, 0.45),
-        0 0 64px rgba(108, 206, 255, 0.35);
-      animation: titleGlow 5.6s ease-in-out infinite;
-    }
-
-    @keyframes titleGlow {
-      0%, 100% {
-        text-shadow:
-          0 0 12px rgba(144, 168, 255, 0.7),
-          0 0 36px rgba(144, 168, 255, 0.32),
-          0 0 90px rgba(108, 206, 255, 0.22);
-      }
-      50% {
-        text-shadow:
-          0 0 20px rgba(155, 196, 255, 0.95),
-          0 0 70px rgba(96, 154, 255, 0.55),
-          0 0 120px rgba(108, 206, 255, 0.5);
-      }
-    }
-
-    .tagline {
-      margin: 0.9rem 0 2.6rem;
-      font-size: clamp(1rem, 2.6vw, 1.18rem);
-      color: rgba(215, 224, 255, 0.9);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.9rem;
-      background: linear-gradient(120deg, rgba(130, 166, 255, 0.3), rgba(96, 214, 255, 0.16));
-      padding: 0.65rem 1.2rem;
-      border-radius: 999px;
-      border: 1px solid rgba(173, 200, 255, 0.14);
-      box-shadow:
-        inset 0 0 0 1px rgba(173, 200, 255, 0.08),
-        0 0 16px rgba(132, 181, 255, 0.26);
-      animation: tagPulse 4.8s ease-in-out infinite;
-    }
-
-    @keyframes tagPulse {
-      0%, 100% {
-        filter: brightness(0.96) drop-shadow(0 0 8px rgba(132, 181, 255, 0.26));
-      }
-      50% {
-        filter: brightness(1.12) drop-shadow(0 0 16px rgba(132, 181, 255, 0.54));
-      }
-    }
-
-    .tree {
-      position: relative;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-    }
-
-    .node {
-      position: relative;
-      margin: 0.4rem 0 0.4rem;
-      padding-left: calc(var(--depth) * 1.6rem + 1rem);
-      --depth-color: rgba(136, 172, 255, 0.4);
-    }
-
-    .node::before {
-      content: "";
-      position: absolute;
-      top: 1.4rem;
-      left: calc(var(--depth) * 1.6rem + 0.1rem);
-      width: 1.1rem;
-      height: 1px;
-      background: linear-gradient(90deg, rgba(83, 238, 255, 0), rgba(83, 238, 255, 0.45));
-      opacity: calc(0.3 + var(--depth) * 0.1);
-    }
-
-    .node::after {
-      content: "";
-      position: absolute;
-      top: -0.2rem;
-      left: calc(var(--depth) * 1.6rem + 0.05rem);
-      width: 1px;
-      height: 100%;
-      background: linear-gradient(180deg, rgba(83, 238, 255, 0.6), rgba(83, 238, 255, 0));
-      opacity: calc(0.28 + var(--depth) * 0.08);
-    }
-
-    .node-label {
-      position: relative;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      padding: 0.58rem 1.1rem;
-      border-radius: 14px;
-      background: linear-gradient(135deg, rgba(109, 147, 255, 0.18), rgba(27, 36, 69, 0.7));
-      border: 1px solid rgba(173, 200, 255, 0.18);
-      box-shadow:
-        inset 0 0 22px rgba(109, 147, 255, 0.08),
-        0 0 16px rgba(109, 147, 255, 0.28);
-      transition: transform 0.45s ease, box-shadow 0.45s ease;
-      overflow: hidden;
-    }
-
-    .node-label::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(120deg, rgba(109, 147, 255, 0), rgba(109, 147, 255, 0.8), rgba(109, 147, 255, 0));
-      mix-blend-mode: screen;
-      opacity: 0;
-      transform: translateX(-80%);
-      transition: opacity 0.6s ease, transform 0.6s ease;
-    }
-
-    .node-type {
-      font-size: 0.72rem;
-      letter-spacing: 0.32em;
-      color: rgba(215, 224, 255, 0.65);
-    }
-
-    .node-name {
-      font-size: 1.03rem;
-      letter-spacing: 0.04em;
-      color: var(--text-soft);
-      text-shadow: 0 0 6px rgba(109, 147, 255, 0.16);
-      animation: textGlow 5.8s ease-in-out infinite;
-    }
-
-    @keyframes textGlow {
-      0%, 100% {
-        text-shadow: 0 0 6px rgba(109, 147, 255, 0.18);
-      }
-      50% {
-        text-shadow: 0 0 14px rgba(155, 196, 255, 0.55);
-      }
-    }
-
-    .node.spotlight .node-label {
-      transform: translateX(8px) scale(1.02);
-      background: linear-gradient(135deg, rgba(119, 177, 255, 0.6), rgba(33, 152, 255, 0.3));
-      border-color: rgba(181, 212, 255, 0.6);
-      box-shadow:
-        0 0 22px rgba(119, 177, 255, 0.45),
-        0 0 60px rgba(96, 214, 255, 0.35);
-    }
-
-    .node.spotlight .node-label::after {
-      opacity: 0.85;
-      transform: translateX(120%);
-      transition-duration: 1s;
-    }
-
-    .node.spotlight .node-name {
-      color: var(--text-strong);
-      text-shadow:
-        0 0 16px rgba(181, 212, 255, 0.8),
-        0 0 36px rgba(109, 147, 255, 0.6);
-    }
-
-    .node:hover .node-label {
-      transform: translateX(6px) scale(1.005);
-      box-shadow:
-        0 0 14px rgba(109, 147, 255, 0.4),
-        0 0 40px rgba(96, 214, 255, 0.24);
-    }
-
-    .node:hover .node-label::after {
-      opacity: 0.6;
-      transform: translateX(90%);
-    }
-
-    .fade-enter-from,
-    .fade-leave-to {
-      opacity: 0;
-      transform: translateY(8px);
-    }
-
-    .fade-enter-active,
-    .fade-leave-active {
-      transition: opacity 0.35s ease, transform 0.35s ease;
-    }
-
-    .meta {
-      margin-top: 2.4rem;
-      display: grid;
-      gap: 0.8rem;
-      color: rgba(207, 219, 255, 0.76);
-      font-size: 0.92rem;
-      letter-spacing: 0.04em;
-    }
-
-    .meta strong {
-      color: var(--text-strong);
-      letter-spacing: 0.06em;
-      text-shadow: 0 0 8px rgba(109, 147, 255, 0.32);
-    }
-
-    @media (max-width: 520px) {
-      .panel {
-        padding: 2.2rem 1.4rem;
-        border-radius: 18px;
-      }
-
-      h1 {
-        letter-spacing: 0.12em;
-      }
-
-      .node {
-        padding-left: calc(var(--depth) * 1.4rem + 0.8rem);
-      }
-
-      .node::before {
-        left: calc(var(--depth) * 1.4rem + 0.04rem);
-      }
-
-      .node::after {
-        left: calc(var(--depth) * 1.4rem + 0.02rem);
-      }
-    }
-  </style>
-</head>
-<body>
-  <div id="app">
-    <section class="panel" v-cloak>
-      <h1>{{ title }}</h1>
-      <p class="tagline">
-        <span>{{ activeTagline }}</span>
-      </p>
-      <ul class="tree">
-        <tree-node :node="tree" :depth="0" :spotlight="activeSpotlight"></tree-node>
-      </ul>
-      <div class="meta">
-        <div><strong>Nodes:</strong> {{ flatNodes.length }} files and folders</div>
-        <div><strong>Current highlight:</strong> {{ currentNodeName }}</div>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Smart Food Delivery App Prototype</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <header class="top-bar">
+      <div class="brand">
+        <span aria-hidden="true">&#129379;</span>
+        <div>
+          <p class="brand-name">Smart Food Delivery</p>
+          <p class="brand-tagline">Sustainable meals for remote communities</p>
+        </div>
       </div>
-    </section>
-  </div>
+      <nav class="main-nav" aria-label="Primary">
+        <button class="nav-btn" data-target="home-view">Search</button>
+        <button class="nav-btn" data-target="compare-view">Compare</button>
+        <button class="nav-btn" data-target="checkout-view">Checkout</button>
+        <button class="nav-btn" data-target="tracking-view">Tracking</button>
+        <button class="nav-btn" data-target="report-view">Report</button>
+      </nav>
+    </header>
 
-  <script>
-    const projectTree = {
-      name: "INFO3315-Part2-Prototype",
-      type: "folder",
-      children: [
-        {
-          name: "index.html",
-          type: "file"
-        }
-      ]
-    };
+    <main id="app" tabindex="-1">
+      <section id="home-view" class="view active" aria-labelledby="home-title">
+        <header class="view-header">
+          <h1 id="home-title">Find nearby food suppliers</h1>
+          <p class="view-instruction">Task 1: Use the filters to locate affordable, low-carbon options that deliver to your area.</p>
+        </header>
 
-    let idCounter = 0;
-    function decorateNode(node, depth = 0) {
-      const decorated = {
-        ...node,
-        id: `node-${idCounter++}`,
-        depth
-      };
-      if (node.children && node.children.length) {
-        decorated.children = node.children.map(child => decorateNode(child, depth + 1));
-      }
-      return decorated;
-    }
-
-    function flattenTree(node, acc = []) {
-      acc.push(node);
-      if (node.children) {
-        node.children.forEach(child => flattenTree(child, acc));
-      }
-      return acc;
-    }
-
-    const rootNode = decorateNode(projectTree);
-    const flatNodes = flattenTree(rootNode);
-
-    const TAGLINES = [
-      "项目结构一目了然",
-      "动效与光效增强专注",
-      "Vue 驱动的文件总览"
-    ];
-
-    const app = Vue.createApp({
-      data() {
-        return {
-          title: "INFO3315 项目概览",
-          tree: rootNode,
-          flatNodes,
-          spotlightIndex: 0,
-          taglineIndex: 0
-        };
-      },
-      computed: {
-        activeSpotlight() {
-          return this.flatNodes[this.spotlightIndex]?.id ?? null;
-        },
-        currentNodeName() {
-          return this.flatNodes[this.spotlightIndex]?.name ?? "";
-        },
-        activeTagline() {
-          return TAGLINES[this.taglineIndex];
-        }
-      },
-      mounted() {
-        this.startSpotlightCycle();
-        this.startTaglineCycle();
-      },
-      methods: {
-        startSpotlightCycle() {
-          setInterval(() => {
-            this.spotlightIndex = (this.spotlightIndex + 1) % this.flatNodes.length;
-          }, 1800);
-        },
-        startTaglineCycle() {
-          setInterval(() => {
-            this.taglineIndex = (this.taglineIndex + 1) % TAGLINES.length;
-          }, 3600);
-        }
-      }
-    });
-
-    app.component("tree-node", {
-      props: {
-        node: {
-          type: Object,
-          required: true
-        },
-        depth: {
-          type: Number,
-          required: true
-        },
-        spotlight: {
-          type: String,
-          required: false,
-          default: null
-        }
-      },
-      template: `
-        <li :class="['node', { spotlight: node.id === spotlight }]" :style="{ '--depth': depth }">
-          <div class="node-label">
-            <span class="node-type">{{ node.type === 'folder' ? 'DIR' : 'FILE' }}</span>
-            <span class="node-name">{{ node.name }}</span>
+        <form id="filter-form" class="filter-panel" aria-label="Search filters">
+          <div class="field">
+            <label for="search-input">Search by name or location</label>
+            <input id="search-input" type="search" placeholder="Try 'Outback' or 'Remote'" />
           </div>
-          <transition-group name="fade" tag="ul" class="tree" v-if="node.children && node.children.length">
-            <tree-node
-              v-for="child in node.children"
-              :key="child.id"
-              :node="child"
-              :depth="depth + 1"
-              :spotlight="spotlight"
-            ></tree-node>
-          </transition-group>
-        </li>
-      `
-    });
 
-    app.mount("#app");
-  </script>
-</body>
+          <div class="field-group">
+            <div class="field">
+              <label for="price-filter">Price band</label>
+              <select id="price-filter">
+                <option value="all">Any</option>
+                <option value="$">$ - Lowest cost</option>
+                <option value="$$">$$ - Balanced</option>
+                <option value="$$$">$$$ - Premium</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="distance-filter">Max distance (km)</label>
+              <input id="distance-filter" type="range" min="5" max="60" value="40" step="5" />
+              <output id="distance-output" for="distance-filter">40 km</output>
+            </div>
+          </div>
+
+          <div class="field toggles">
+            <label class="toggle">
+              <input id="surplus-toggle" type="checkbox" />
+              <span>Show surplus food offers only</span>
+            </label>
+            <label class="toggle">
+              <input id="delivery-toggle" type="checkbox" checked />
+              <span>Delivery available</span>
+            </label>
+          </div>
+        </form>
+
+        <section aria-live="polite" aria-atomic="true">
+          <h2 class="section-title">Suppliers near you</h2>
+          <p class="section-subtitle">Tap a card to compare or add a community hamper to your cart.</p>
+          <div id="supplier-grid" class="supplier-grid"></div>
+        </section>
+      </section>
+
+      <section id="compare-view" class="view" aria-labelledby="compare-title" hidden>
+        <header class="view-header">
+          <h1 id="compare-title">Compare suppliers</h1>
+          <p class="view-instruction">Task 2: Choose two suppliers to see how they differ in freshness, price, and emissions.</p>
+        </header>
+
+        <div class="compare-panel">
+          <div class="field">
+            <label for="compare-a">Supplier A</label>
+            <select id="compare-a"></select>
+          </div>
+          <div class="field">
+            <label for="compare-b">Supplier B</label>
+            <select id="compare-b"></select>
+          </div>
+        </div>
+
+        <div class="comparison-table-container">
+          <table class="comparison-table" aria-describedby="compare-title">
+            <thead>
+              <tr>
+                <th scope="col">Metric</th>
+                <th scope="col" id="compare-name-a">Supplier A</th>
+                <th scope="col" id="compare-name-b">Supplier B</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Price</th>
+                <td data-metric="price-a"></td>
+                <td data-metric="price-b"></td>
+              </tr>
+              <tr>
+                <th scope="row">Freshness score</th>
+                <td data-metric="freshness-a"></td>
+                <td data-metric="freshness-b"></td>
+              </tr>
+              <tr>
+                <th scope="row">Delivery CO2 impact</th>
+                <td data-metric="co2-a"></td>
+                <td data-metric="co2-b"></td>
+              </tr>
+              <tr>
+                <th scope="row">Distance</th>
+                <td data-metric="distance-a"></td>
+                <td data-metric="distance-b"></td>
+              </tr>
+              <tr>
+                <th scope="row">Surplus food</th>
+                <td data-metric="surplus-a"></td>
+                <td data-metric="surplus-b"></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="checkout-view" class="view" aria-labelledby="checkout-title" hidden>
+        <header class="view-header">
+          <h1 id="checkout-title">Review and place your order</h1>
+          <p class="view-instruction">Task 3: Confirm the items in your hamper, then place the order to start tracking.</p>
+        </header>
+
+        <div class="checkout-layout">
+          <section class="cart" aria-label="Cart contents">
+            <h2>Cart summary</h2>
+            <ul id="cart-list" class="cart-list"></ul>
+            <p id="cart-empty" class="empty-state">Your hamper is empty. Add items from the search view.</p>
+            <div class="cart-total">
+              <span>Total</span>
+              <strong id="cart-total">$0.00</strong>
+            </div>
+          </section>
+
+          <section class="checkout-details" aria-label="Delivery preferences">
+            <h2>Delivery preferences</h2>
+            <div class="field">
+              <label for="delivery-window">Delivery window</label>
+              <select id="delivery-window">
+                <option value="11:00 - 13:00">11:00 - 13:00</option>
+                <option value="13:00 - 15:00">13:00 - 15:00</option>
+                <option value="17:00 - 19:00">17:00 - 19:00</option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="contact-note">Driver note</label>
+              <textarea id="contact-note" rows="3" placeholder="Add directions or access notes"></textarea>
+            </div>
+
+            <button id="place-order" class="primary-btn" type="button" disabled>Place order</button>
+            <p id="order-status" class="order-status" role="status" aria-live="polite"></p>
+            <button id="go-to-tracking" class="secondary-btn" type="button" hidden>Go to tracking</button>
+          </section>
+        </div>
+      </section>
+
+      <section id="tracking-view" class="view" aria-labelledby="tracking-title" hidden>
+        <header class="view-header">
+          <h1 id="tracking-title">Track your delivery</h1>
+          <p class="view-instruction">Task 3 (continued): Follow the delivery stages to monitor when food arrives.</p>
+        </header>
+
+        <section class="tracking-card" aria-live="polite">
+          <div class="map-placeholder" role="img" aria-label="Stylised delivery map with highlighted route"></div>
+          <ol class="tracking-steps" id="tracking-steps"></ol>
+          <div class="progress-bar" aria-hidden="true">
+            <div id="progress-indicator" class="progress-indicator"></div>
+          </div>
+          <button id="reset-tracking" class="secondary-btn" type="button">Restart tracking demo</button>
+        </section>
+      </section>
+
+      <section id="report-view" class="view" aria-labelledby="report-title" hidden>
+        <header class="view-header">
+          <h1 id="report-title">Savings & sustainability report</h1>
+          <p class="view-instruction">Optional Task: Review your impact after ordering surplus community hampers.</p>
+        </header>
+
+        <div class="report-grid">
+          <article class="report-card">
+            <h2>Money saved</h2>
+            <p class="report-value" id="report-savings">$0.00</p>
+            <p class="report-detail">Compared to standard metropolitan deliveries.</p>
+          </article>
+          <article class="report-card">
+            <h2>CO2 avoided</h2>
+            <p class="report-value" id="report-co2">0.0 kg</p>
+            <p class="report-detail">Estimated from lower delivery distances and surplus rescue.</p>
+          </article>
+          <article class="report-card">
+            <h2>Meals rescued</h2>
+            <p class="report-value" id="report-meals">0</p>
+            <p class="report-detail">Surplus portions diverted from waste this month.</p>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <p>INFO3315 Smart Food Delivery Prototype &middot; Designed for remote community resilience</p>
+    </footer>
+
+    <script src="script.js" defer></script>
+  </body>
 </html>
